@@ -1,0 +1,670 @@
+[
+  {
+    "pattern_name": "System Configuration Issue",
+    "description": "Incidents related to system configuration issues and validation of logs.",
+    "rules": [
+      "Title contains 'Lockout' or 'Down'",
+      "Category is 'Security' or 'Infrastructure'",
+      "Description text contains 'validation' or 'configuration update'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "Account Lockout",
+        "Server Down"
+      ],
+      "Description text": [
+        "system logs",
+        "validating system logs"
+      ],
+      "Top Category": [
+        "Security",
+        "Infrastructure"
+      ],
+      "Sub Category": [
+        "Account Lockout",
+        "Server Down",
+        "Network Outage"
+      ],
+      "Resolution Notes Keywords": [
+        "configuration update",
+        "validating logs"
+      ],
+      "Resolved By Roles": [
+        "Vinod Kumar",
+        "Dilip Menon",
+        "Shalini N",
+        "Mathew P"
+      ]
+    },
+    "_cluster_id": 0,
+    "_sample_count": 6,
+    "_example_indices": [
+      1,
+      5,
+      16,
+      20,
+      21,
+      24
+    ]
+  },
+  {
+    "pattern_name": "Login Error Pattern",
+    "description": "Pattern for incidents related to login errors in various modules.",
+    "rules": [
+      "Title contains Login Error",
+      "Category is NetBanking or Core Banking",
+      "Description text contains 'login error' or 'invalid credentials'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "Login",
+        "Error"
+      ],
+      "Description text": [
+        "login failed",
+        "invalid username/password",
+        "wrong password"
+      ],
+      "Top Category": [
+        "NetBanking",
+        "Core Banking"
+      ],
+      "Sub Category": [
+        "Login Error"
+      ],
+      "Resolution Notes Keywords": [
+        "configuration update",
+        "system logs validation"
+      ],
+      "Resolved By Roles": [
+        "IT Service Desk"
+      ]
+    },
+    "_cluster_id": 1,
+    "_sample_count": 6,
+    "_example_indices": [
+      3,
+      41,
+      44,
+      47,
+      54,
+      76
+    ]
+  },
+  {
+    "pattern_name": "App Crash Pattern",
+    "description": "Incidents related to app crashes in mobile banking module",
+    "rules": [
+      "Title contains 'App Crash'",
+      "Assignment Group is 'Mobile Banking'",
+      "Category is 'Mobile Banking' or 'App Crash'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "App Crash",
+        "mobile banking"
+      ],
+      "Description text": [
+        "app crash",
+        "mobile banking module"
+      ],
+      "Top Category": [
+        "Mobile Banking"
+      ],
+      "Sub Category": [
+        "App Crash",
+        "App Login Issue"
+      ],
+      "Resolution Notes Keywords": [
+        "configuration update",
+        "system logs validation"
+      ],
+      "Resolved By Roles": [
+        "IT-Dev"
+      ]
+    },
+    "_cluster_id": 2,
+    "_sample_count": 6,
+    "_example_indices": [
+      0,
+      22,
+      30,
+      106,
+      111,
+      112
+    ]
+  },
+  {
+    "pattern_name": "Payment or UPI Failure",
+    "description": "Incidents related to payment or UPI failures in banking modules.",
+    "rules": [
+      "Title contains 'Failure' or 'Timeout'",
+      "Assignment Group is 'Banking'",
+      "Category is 'NetBanking', 'Payments', or 'Mobile Banking'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "payment",
+        "upi",
+        "netbanking",
+        "payments",
+        "mobile"
+      ],
+      "Description text": [
+        "issue reported",
+        "user reported"
+      ],
+      "Top Category": [
+        "NetBanking",
+        "Payments",
+        "Mobile Banking"
+      ],
+      "Sub Category": [
+        "Payment Failure",
+        "RTGS Failure",
+        "UPI Timeout",
+        "Account Sync Failure",
+        "UPI Failure"
+      ],
+      "Resolution Notes Keywords": [
+        "config update",
+        "system logs validated"
+      ],
+      "Resolved By Roles": [
+        "Dilip Menon",
+        "Shalini N",
+        "Priya Iyer"
+      ]
+    },
+    "_cluster_id": 3,
+    "_sample_count": 6,
+    "_example_indices": [
+      8,
+      9,
+      14,
+      17,
+      19,
+      23
+    ]
+  },
+  {
+    "pattern_name": "High CPU Infrastructure Issues",
+    "description": "Incidents related to high CPU usage in infrastructure modules.",
+    "rules": [
+      "Title contains 'High CPU'",
+      "Assignment Group is 'Infrastructure'",
+      "Category is 'Infrastructure' and Sub Category is 'High CPU'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "high cpu",
+        "cpu issue"
+      ],
+      "Description text": [
+        "high cpu usage",
+        "infrastructure module issue"
+      ],
+      "Top Category": [
+        "Infrastructure"
+      ],
+      "Sub Category": [
+        "High CPU"
+      ],
+      "Resolution Notes Keywords": [
+        "configuration update",
+        "system log validation"
+      ],
+      "Resolved By Roles": [
+        "ITSM Team"
+      ]
+    },
+    "_cluster_id": 4,
+    "_sample_count": 6,
+    "_example_indices": [
+      18,
+      57,
+      67,
+      73,
+      79,
+      90
+    ]
+  },
+  {
+    "pattern_name": "Card Management Issues",
+    "description": "Incidents related to issues with cards, PIN reset, and delivery delays.",
+    "rules": [
+      "Title contains (PIN Reset|Card Delivery Delay|Card Blocked|Card Not Working)",
+      "Assignment Group is Card Management",
+      "Category is Card Management"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "card",
+        "pin",
+        "delivery",
+        "block",
+        "not working"
+      ],
+      "Description text": [
+        "issue",
+        "problem",
+        "reported",
+        "delayed",
+        "blocked"
+      ],
+      "Top Category": [
+        "Card Management"
+      ],
+      "Sub Category": [
+        "PIN Reset|Card Delivery Delay|Card Blocked|Card Not Working"
+      ],
+      "Resolution Notes Keywords": [
+        "configuration update",
+        "system log validation"
+      ],
+      "Resolved By Roles": [
+        "it-ops"
+      ]
+    },
+    "_cluster_id": 5,
+    "_sample_count": 6,
+    "_example_indices": [
+      4,
+      11,
+      12,
+      13,
+      38,
+      50
+    ]
+  },
+  {
+    "pattern_name": "Profile and Passbook Update Errors",
+    "description": "Pattern for incidents related to profile and passbook update issues in banking modules.",
+    "rules": [
+      "Title contains Profile or Passbook Update Error",
+      "Assignment Group is Banking Modules",
+      "Category is NetBanking or Core Banking"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "Profile",
+        "Passbook"
+      ],
+      "Description text": [
+        "update error",
+        "issue",
+        "problem"
+      ],
+      "Top Category": [
+        "NetBanking",
+        "Core Banking"
+      ],
+      "Sub Category": [
+        "Profile Update Error",
+        "Passbook Update Issue"
+      ],
+      "Resolution Notes Keywords": [
+        "configuration update",
+        "system logs",
+        "validation"
+      ],
+      "Resolved By Roles": [
+        "IT Support",
+        "Technical Lead"
+      ]
+    },
+    "_cluster_id": 6,
+    "_sample_count": 6,
+    "_example_indices": [
+      43,
+      65,
+      70,
+      74,
+      78,
+      82
+    ]
+  },
+  {
+    "pattern_name": "Database Slow",
+    "description": "Incidents related to slow database performance in infrastructure module",
+    "rules": [
+      "Title contains 'Database Slow'",
+      "Top Category is 'Infrastructure'",
+      "Sub Category is 'Database Slow'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "slow",
+        "database"
+      ],
+      "Description text": [
+        "performance issue",
+        "infrastructure module"
+      ],
+      "Top Category": [
+        "Infrastructure"
+      ],
+      "Sub Category": [
+        "Database Slow"
+      ],
+      "Resolution Notes Keywords": [
+        "configuration update",
+        "log validation"
+      ],
+      "Resolved By Roles": [
+        "ITSM Incident Analyst"
+      ]
+    },
+    "_cluster_id": 7,
+    "_sample_count": 6,
+    "_example_indices": [
+      6,
+      7,
+      10,
+      99,
+      114,
+      140
+    ]
+  },
+  {
+    "pattern_name": "ATM Cash Dispensing Issues",
+    "description": "Incidents related to ATM cash dispensing issues, including not dispensing cash, card capture, and cash out.",
+    "rules": [
+      "Title contains 'ATM Not Dispensing Cash' or 'ATM Card Capture' or 'ATM Cash Out'",
+      "Assignment Group is 'ATM/Branch Ops'",
+      "Category is 'ATM/Branch Ops'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "ATM",
+        "not dispensing cash",
+        "card capture",
+        "cash out"
+      ],
+      "Description text": [
+        "user reported issue",
+        "atm not dispensing cash",
+        "atm card capture",
+        "atm cash out"
+      ],
+      "Top Category": [
+        "ATM/Branch Ops"
+      ],
+      "Sub Category": [
+        "ATM Not Dispensing Cash",
+        "ATM Card Capture",
+        "ATM Cash Out"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "IT Support"
+      ]
+    },
+    "_cluster_id": 8,
+    "_sample_count": 6,
+    "_example_indices": [
+      15,
+      31,
+      32,
+      48,
+      72,
+      84
+    ]
+  },
+  {
+    "pattern_name": "IMPS Reversal Configuration Issue",
+    "description": "Incidents related to IMPS reversal configuration issues in the payments module.",
+    "rules": [
+      "Title contains 'IMPS Reversal'",
+      "Category is 'Payments' and Sub Category is 'IMPS Reversal'",
+      "Description text contains 'reversal' and 'payments module'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "IMPS",
+        "Reversal"
+      ],
+      "Description text": [
+        "reversal",
+        "configuration",
+        "payments module",
+        "issue",
+        "resolved"
+      ],
+      "Top Category": [
+        "Payments"
+      ],
+      "Sub Category": [
+        "IMPS Reversal"
+      ],
+      "Resolution Notes Keywords": [
+        "config update",
+        "validate system logs"
+      ],
+      "Resolved By Roles": [
+        "ITSM Analyst",
+        "DevOps"
+      ]
+    },
+    "_cluster_id": 9,
+    "_sample_count": 6,
+    "_example_indices": [
+      40,
+      51,
+      58,
+      81,
+      163,
+      198
+    ]
+  },
+  {
+    "pattern_name": "Access Denied Configuration Issue",
+    "description": "Incidents related to access denied issues in security module configuration.",
+    "rules": [
+      "Title contains Access Denied",
+      "Category is Security",
+      "Sub Category is Access Denied"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "Access",
+        "Denied"
+      ],
+      "Description text": [
+        "security module",
+        "configuration"
+      ],
+      "Top Category": [
+        "Security"
+      ],
+      "Sub Category": [
+        "Access Denied"
+      ],
+      "Resolution Notes Keywords": [
+        "update configuration",
+        "validate system logs"
+      ],
+      "Resolved By Roles": [
+        "IT Operations"
+      ]
+    },
+    "_cluster_id": 10,
+    "_sample_count": 6,
+    "_example_indices": [
+      28,
+      33,
+      35,
+      42,
+      61,
+      144
+    ]
+  },
+  {
+    "pattern_name": "Fraud Alert Configuration Issue",
+    "description": "Incidents related to fraud alert configuration issues in the security module.",
+    "rules": [
+      "Title contains 'Fraud Alert'",
+      "Description text contains 'security module'",
+      "Category is 'Security'",
+      "Sub Category is 'Fraud Alert'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "fraud",
+        "alert"
+      ],
+      "Description text": [
+        "security module",
+        "module"
+      ],
+      "Top Category": [
+        "Security"
+      ],
+      "Sub Category": [
+        "Fraud Alert"
+      ],
+      "Resolution Notes Keywords": [
+        "configuration",
+        "update"
+      ],
+      "Resolved By Roles": []
+    },
+    "_cluster_id": 11,
+    "_sample_count": 6,
+    "_example_indices": [
+      2,
+      75,
+      132,
+      133,
+      139,
+      172
+    ]
+  },
+  {
+    "pattern_name": "CBS Login Issue",
+    "description": "ITSM pattern for CBS login issues in the core banking module.",
+    "rules": [
+      "Title contains 'CBS Login Issue'",
+      "Top Category is 'Core Banking'",
+      "Sub Category is 'CBS Login Issue'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "cbs",
+        "login"
+      ],
+      "Description text": [
+        "core banking module",
+        "issue"
+      ],
+      "Top Category": [
+        "Core Banking"
+      ],
+      "Sub Category": [
+        "CBS Login Issue"
+      ],
+      "Resolution Notes Keywords": [
+        "configuration",
+        "system logs"
+      ],
+      "Resolved By Roles": [
+        "ITSM Team"
+      ]
+    },
+    "_cluster_id": 12,
+    "_sample_count": 6,
+    "_example_indices": [
+      34,
+      39,
+      45,
+      66,
+      68,
+      95
+    ]
+  },
+  {
+    "pattern_name": "Fingerprint Not Working in Mobile Banking",
+    "description": "Pattern for incidents related to fingerprint not working in the mobile banking module.",
+    "rules": [
+      "Title contains Fingerprint Not Working"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "Fingerprint",
+        "Mobile Banking"
+      ],
+      "Description text": [
+        "fingerprint not working",
+        "mobile banking module"
+      ],
+      "Top Category": [
+        "Mobile Banking"
+      ],
+      "Sub Category": [
+        "Fingerprint Not Working"
+      ],
+      "Resolution Notes Keywords": [
+        "configuration update",
+        "system logs validation"
+      ],
+      "Resolved By Roles": [
+        "ITSM Incident Resolvers"
+      ]
+    },
+    "_cluster_id": 13,
+    "_sample_count": 6,
+    "_example_indices": [
+      37,
+      52,
+      53,
+      129,
+      155,
+      189
+    ]
+  },
+  {
+    "pattern_name": "NEFT Delayed Issue",
+    "description": "Incidents related to NEFT payment delay issues",
+    "rules": [
+      "Title contains 'NEFT Delayed'",
+      "Assignment Group is 'Payments'",
+      "Category is 'Payments'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "NEFT",
+        "Delayed"
+      ],
+      "Description text": [
+        "delayed in the payments module",
+        "neft delayed"
+      ],
+      "Top Category": [
+        "Payments"
+      ],
+      "Sub Category": [
+        "NEFT Delayed"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "ITSM Incident Analyst"
+      ]
+    },
+    "_cluster_id": 14,
+    "_sample_count": 6,
+    "_example_indices": [
+      60,
+      175,
+      202,
+      204,
+      208,
+      221
+    ]
+  }
+]

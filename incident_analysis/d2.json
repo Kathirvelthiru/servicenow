@@ -1,0 +1,525 @@
+[
+  {
+    "pattern_name": "2FA Configuration Issue",
+    "description": "A pattern for incidents related to 2-factor authentication configuration issues in the netbanking module.",
+    "rules": [
+      "Title contains '2FA' or '2fa'",
+      "Top Category is 'NetBanking'",
+      "Sub Category is '2FA Issue'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "2FA",
+        "2fa"
+      ],
+      "Description text": [
+        "user reported issue related to 2fa issue",
+        "issue related to 2fa issue"
+      ],
+      "Top Category": [
+        "NetBanking"
+      ],
+      "Sub Category": [
+        "2FA Issue"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "Shalini N",
+        "Vinod Kumar",
+        "Amit Singh",
+        "Karan A",
+        "Raghav S"
+      ]
+    }
+  },
+  {
+    "pattern_name": "Configuration Update and Log Validation",
+    "description": "Incident pattern where the issue is resolved by updating configuration and validating system logs.",
+    "rules": [
+      "Top Category in [Core Banking, Security]",
+      "Sub Category in [CBS Login Issue, Suspicious Login, Transaction Error, Profile Update Error]"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "Suspicious Login",
+        "CBS Login Issue",
+        "Transaction Error",
+        "Profile Update Error"
+      ],
+      "Description text": [
+        "User reported issue related to *login/profile update* in the *core banking/netbanking* module."
+      ],
+      "Top Category": [
+        "Core Banking",
+        "Security"
+      ],
+      "Sub Category": [
+        "CBS Login Issue",
+        "Suspicious Login",
+        "Transaction Error",
+        "Profile Update Error"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "Harini R",
+        "Karan A",
+        "Dilip Menon",
+        "Mathew P"
+      ]
+    }
+  },
+  {
+    "pattern_name": "App Crash Pattern",
+    "description": "Incident pattern for app crashes in the mobile banking module.",
+    "rules": [
+      "Title contains 'App Crash'",
+      "Top Category is 'Mobile Banking'",
+      "Sub Category is 'App Crash'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "App Crash"
+      ],
+      "Description text": [
+        "user reported issue related to app crash in the mobile banking module"
+      ],
+      "Top Category": [
+        "Mobile Banking"
+      ],
+      "Sub Category": [
+        "App Crash"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "Amit Singh",
+        "Raghav S",
+        "Priya Iyer",
+        "Rohit Verma"
+      ]
+    }
+  },
+  {
+    "pattern_name": "Payment or Account Sync Failure",
+    "description": "Incident pattern for payment or account sync failures in the banking system.",
+    "rules": [
+      "Title contains 'Payment' or 'Account Sync'",
+      "Top Category is either 'NetBanking', 'Payments', or 'Core Banking'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "Payment Failure",
+        "RTGS Failure",
+        "UPI Timeout",
+        "Account Sync Failure"
+      ],
+      "Description text": [
+        "user reported issue related to payment failure",
+        "user reported issue related to rtgs failure",
+        "user reported issue related to upi timeout",
+        "user reported issue related to account sync failure"
+      ],
+      "Top Category": [
+        "NetBanking",
+        "Payments",
+        "Core Banking"
+      ],
+      "Sub Category": [
+        "Payment Failure",
+        "RTGS Failure",
+        "UPI Timeout",
+        "Account Sync Failure"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "Dilip Menon",
+        "Shalini N"
+      ]
+    }
+  },
+  {
+    "pattern_name": "High CPU Incident Pattern",
+    "description": "A pattern for incidents related to high CPU usage in the infrastructure module.",
+    "rules": [
+      "Incident title contains 'High CPU'",
+      "Top Category is 'Infrastructure'",
+      "Sub Category is 'High CPU'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "High CPU"
+      ],
+      "Description text": [
+        "user reported issue related to high cpu",
+        "issue resolved by updating configuration and validating system logs for high cpu"
+      ],
+      "Top Category": [
+        "Infrastructure"
+      ],
+      "Sub Category": [
+        "High CPU"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "IT"
+      ]
+    }
+  },
+  {
+    "pattern_name": "Card Management Issue",
+    "description": "A pattern for incidents related to card management module issues.",
+    "rules": [
+      "Title contains 'PIN Reset' or 'Card Blocked'",
+      "Top Category is 'Card Management'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "PIN Reset",
+        "Card Blocked"
+      ],
+      "Description text": [
+        "user reported issue related to pin reset/card blocked in the card management module"
+      ],
+      "Top Category": [
+        "Card Management"
+      ],
+      "Sub Category": [
+        "PIN Reset",
+        "Card Delivery Delay",
+        "Card Blocked"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "Karan A",
+        "Mathew P",
+        "Vinod Kumar",
+        "Raghav S",
+        "Priya Iyer"
+      ]
+    }
+  },
+  {
+    "pattern_name": "Passbook Update Issue",
+    "description": "Incident pattern for passbook update issues in the core banking module.",
+    "rules": [
+      "Title contains 'Passbook Update Issue'",
+      "Top Category is 'Core Banking'",
+      "Sub Category is 'Passbook Update Issue'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "Passbook Update Issue"
+      ],
+      "Description text": [
+        "user reported issue related to passbook update issue in the core banking module"
+      ],
+      "Top Category": [
+        "Core Banking"
+      ],
+      "Sub Category": [
+        "Passbook Update Issue"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "Priya Iyer",
+        "Vinod Kumar",
+        "Dilip Menon",
+        "Shalini N",
+        "Amit Singh"
+      ]
+    }
+  },
+  {
+    "pattern_name": "ATM Card Capture Incident Pattern",
+    "description": "A pattern of incidents related to ATM card capture issues in the atm/branch ops module.",
+    "rules": [
+      "Incident title contains 'ATM Card Capture'",
+      "Top Category is 'ATM/Branch Ops' and Sub Category is 'ATM Card Capture'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "ATM Card Capture"
+      ],
+      "Description text": [
+        "User reported issue related to atm card capture in the atm/branch ops module."
+      ],
+      "Top Category": [
+        "ATM/Branch Ops"
+      ],
+      "Sub Category": [
+        "ATM Card Capture"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "Amit Singh",
+        "Mathew P",
+        "Raghav S",
+        "Karan A"
+      ]
+    }
+  },
+  {
+    "pattern_name": "Network Outage Resolution",
+    "description": "Pattern for network outage incidents resolved by updating configuration and validating system logs.",
+    "rules": [
+      "Incident title contains 'Network Outage'",
+      "Top Category is 'Infrastructure' and Sub Category is 'Network Outage'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "Network Outage"
+      ],
+      "Description text": [
+        "user reported issue related to network outage in the infrastructure module"
+      ],
+      "Top Category": [
+        "Infrastructure"
+      ],
+      "Sub Category": [
+        "Network Outage"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "IT"
+      ]
+    }
+  },
+  {
+    "pattern_name": "Fingerprint Not Working",
+    "description": "Incident pattern for issues related to fingerprint not working in the mobile banking module.",
+    "rules": [
+      "Title contains 'Fingerprint Not Working'",
+      "Top Category is 'Mobile Banking' and Sub Category is 'Fingerprint Not Working'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "Fingerprint Not Working"
+      ],
+      "Description text": [
+        "User reported issue related to fingerprint not working in the mobile banking module."
+      ],
+      "Top Category": [
+        "Mobile Banking"
+      ],
+      "Sub Category": [
+        "Fingerprint Not Working"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "Rohit Verma",
+        "Vinod Kumar",
+        "Priya Iyer",
+        "Dilip Menon",
+        "Amit Singh"
+      ]
+    }
+  },
+  {
+    "pattern_name": "NEFT Delayed Incident Pattern",
+    "description": "Incident pattern for NEFT delayed issues in the payments module.",
+    "rules": [
+      "Title contains 'NEFT Delayed'",
+      "Top Category is 'Payments'",
+      "Sub Category is 'NEFT Delayed'",
+      "Description contains 'User reported issue related to neft delayed' or similar text",
+      "Resolution Notes contain 'updating configuration' and/or 'validating system logs'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "NEFT Delayed"
+      ],
+      "Description text": [
+        "user reported issue",
+        "related to neft delayed"
+      ],
+      "Top Category": [
+        "Payments"
+      ],
+      "Sub Category": [
+        "NEFT Delayed"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "Dilip Menon",
+        "Harini R",
+        "Raghav S",
+        "Vinod Kumar",
+        "Shalini N"
+      ]
+    }
+  },
+  {
+    "pattern_name": "Infrastructure Slow/Down",
+    "description": "Incidents related to infrastructure slow or down issues, typically resolved by updating configuration and validating system logs.",
+    "rules": [
+      "Title contains 'Server Down' or 'Database Slow'",
+      "Top Category is 'Infrastructure'",
+      "Sub Category is either 'Server Down' or 'Database Slow'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "Server Down",
+        "Database Slow"
+      ],
+      "Description text": [
+        "user reported issue related to server down",
+        "user reported issue related to database slow"
+      ],
+      "Top Category": [
+        "Infrastructure"
+      ],
+      "Sub Category": [
+        "Server Down",
+        "Database Slow"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "Dilip Menon",
+        "Raghav S",
+        "Harini R",
+        "Mathew P"
+      ]
+    }
+  },
+  {
+    "pattern_name": "IMPS Reversal Issue",
+    "description": "Incident pattern for IMPS reversal issues in the payments module.",
+    "rules": [
+      "Title contains 'IMPS Reversal'",
+      "Top Category is 'Payments' and Sub Category is 'IMPS Reversal'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "IMPS Reversal"
+      ],
+      "Description text": [
+        "user reported issue related to imps reversal in the payments module"
+      ],
+      "Top Category": [
+        "Payments"
+      ],
+      "Sub Category": [
+        "IMPS Reversal"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "Mathew P",
+        "Karan A",
+        "Dilip Menon",
+        "Rohit Verma"
+      ]
+    }
+  },
+  {
+    "pattern_name": "ATM Cash Dispensing Issue",
+    "description": "Pattern for incidents related to ATM cash dispensing issues.",
+    "rules": [
+      "Title contains 'ATM Not Dispensing Cash' or 'ATM Cash Out'",
+      "Top Category is 'ATM/Branch Ops'",
+      "Sub Category is either 'ATM Not Dispensing Cash' or 'ATM Cash Out'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "ATM Not Dispensing Cash",
+        "ATM Cash Out"
+      ],
+      "Description text": [
+        "user reported issue related to atm not dispensing cash",
+        "user reported issue related to atm cash out"
+      ],
+      "Top Category": [
+        "ATM/Branch Ops"
+      ],
+      "Sub Category": [
+        "ATM Not Dispensing Cash",
+        "ATM Cash Out"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "Harini R",
+        "Dilip Menon",
+        "Priya Iyer",
+        "Amit Singh",
+        "Karan A"
+      ]
+    }
+  },
+  {
+    "pattern_name": "Security Configuration Issue",
+    "description": "Incidents related to security configuration issues in the security module.",
+    "rules": [
+      "Title contains 'Account Lockout' or 'Access Denied'",
+      "Top Category is 'Security'",
+      "Sub Category is either 'Account Lockout' or 'Access Denied'"
+    ],
+    "indicators": {
+      "Title/Short Description": [
+        "Account Lockout",
+        "Access Denied"
+      ],
+      "Description text": [
+        "security module",
+        "configuration issue"
+      ],
+      "Top Category": [
+        "Security"
+      ],
+      "Sub Category": [
+        "Account Lockout",
+        "Access Denied"
+      ],
+      "Resolution Notes Keywords": [
+        "updating configuration",
+        "validating system logs"
+      ],
+      "Resolved By Roles": [
+        "Vinod Kumar",
+        "Dilip Menon",
+        "Shalini N",
+        "Priya Iyer",
+        "Mathew P"
+      ]
+    }
+  }
+]
