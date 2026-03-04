@@ -96,6 +96,7 @@ PURPOSE:
 Classifies new/incoming incidents against the 15 patterns discovered by the
 first script. Runs interactively to match user-provided incidents.
 
+------------
 HOW IT WORKS:
 -------------
 
