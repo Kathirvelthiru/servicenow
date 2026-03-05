@@ -1,0 +1,27 @@
+2026-03-05 12:41:06 - __main__ - INFO - Loaded 15 patterns from incident_patterns_top_15.json
+2026-03-05 12:41:06 - __main__ - INFO - LLM initialized: llama3.1
+2026-03-05 12:41:06 - __main__ - INFO - Database initialized: incident_matches.db
+2026-03-05 12:47:47 - __main__ - INFO - Loaded 15 patterns from incident_patterns_top_15.json
+2026-03-05 12:47:49 - __main__ - INFO - LLM initialized: llama3.1
+2026-03-05 12:47:49 - __main__ - INFO - Database initialized: incident_matches.db
+2026-03-05 12:53:18 - __main__ - WARNING - JSON parse error: Invalid \escape: line 4 column 84 (char 155)
+2026-03-05 12:53:18 - __main__ - WARNING - JSON extraction failed (attempt 1/3): Could not extract valid JSON from LLM response
+2026-03-05 12:53:52 - __main__ - WARNING - JSON parse error: Invalid \escape: line 4 column 84 (char 155)
+2026-03-05 12:53:52 - __main__ - WARNING - JSON extraction failed (attempt 2/3): Could not extract valid JSON from LLM response
+2026-03-05 12:54:25 - __main__ - WARNING - JSON parse error: Invalid \escape: line 4 column 84 (char 155)
+2026-03-05 12:54:25 - __main__ - ERROR - Pattern matching failed: Could not extract valid JSON from LLM response
+2026-03-05 12:55:23 - __main__ - WARNING - JSON parse error: Invalid \escape: line 4 column 84 (char 155)
+2026-03-05 12:55:23 - __main__ - WARNING - JSON extraction failed (attempt 1/3): Could not extract valid JSON from LLM response
+2026-03-05 12:55:56 - __main__ - WARNING - JSON parse error: Invalid \escape: line 4 column 84 (char 155)
+2026-03-05 12:55:56 - __main__ - WARNING - JSON extraction failed (attempt 2/3): Could not extract valid JSON from LLM response
+2026-03-05 12:56:30 - __main__ - WARNING - JSON parse error: Invalid \escape: line 4 column 84 (char 155)
+2026-03-05 12:56:30 - __main__ - ERROR - Pattern matching failed: Could not extract valid JSON from LLM response
+2026-03-05 12:57:55 - __main__ - INFO - Loaded 15 patterns from incident_patterns_top_15.json
+2026-03-05 12:57:56 - __main__ - INFO - LLM initialized: llama3.1
+2026-03-05 12:57:56 - __main__ - INFO - Database initialized: incident_matches.db
+2026-03-05 13:02:05 - incident_pattern_matcher_prod - INFO - Loaded 15 patterns from incident_patterns_top_15.json
+2026-03-05 13:02:06 - incident_pattern_matcher_prod - INFO - LLM initialized: llama3.1
+2026-03-05 13:02:06 - incident_pattern_matcher_prod - INFO - Database initialized: incident_matches.db
+2026-03-05 13:02:07 - incident_pattern_matcher_prod - INFO - Loaded 15 patterns from incident_patterns_top_15.json
+2026-03-05 13:02:08 - incident_pattern_matcher_prod - INFO - LLM initialized: llama3.1
+2026-03-05 13:02:08 - incident_pattern_matcher_prod - INFO - Database initialized: incident_matches.db
