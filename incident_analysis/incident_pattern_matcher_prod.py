@@ -22,11 +22,18 @@ from typing import Dict, List, Optional, Tuple
 from pathlib import Path
 from enum import Enum
 import sqlite3
+import numpy as np
 
 try:
     from langchain_ollama import ChatOllama
 except ImportError:
     raise ImportError("Please install langchain_ollama: pip install langchain-ollama")
+
+try:
+    from sentence_transformers import SentenceTransformer
+    from sklearn.metrics.pairwise import cosine_similarity
+except ImportError:
+    raise ImportError("Please install: pip install sentence-transformers scikit-learn")
 
 try:
     import click
@@ -40,7 +47,7 @@ except ImportError:
 
 class Config:
     """Application configuration"""
-    PATTERN_FILE: str = "incident_patterns_top_15.json"
+    PATTERN_FILE: str = "incident_patterns_final.json"
     MODEL_NAME: str = "llama3.1"
     LLM_BASE_URL: str = "http://localhost:11434"
     LLM_TEMPERATURE: float = 0.0
@@ -50,6 +57,9 @@ class Config:
     LOG_LEVEL: str = logging.INFO
     DB_FILE: str = "incident_matches.db"
     ENABLE_DB: bool = True
+    EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
+    TOP_K_PATTERNS: int = 15
+    ENABLE_SIMILARITY_FILTER: bool = True
 
 
 class ConfidenceLevel(str, Enum):
@@ -175,9 +185,15 @@ class PatternMatcher:
         self.patterns = None
         self.llm = None
         self.db = None
+        self.embedding_model = None
+        self.pattern_embeddings = None
+        self.pattern_texts = None
         
         self._load_patterns()
         self._init_llm()
+        
+        if Config.ENABLE_SIMILARITY_FILTER:
+            self._init_embeddings()
         
         if enable_db:
             self.db = IncidentDatabase()
@@ -212,6 +228,28 @@ class PatternMatcher:
         except Exception as e:
             logger.error(f"Failed to initialize LLM: {e}")
             raise
+    
+    def _init_embeddings(self):
+        """Initialize embedding model and pre-compute pattern embeddings"""
+        try:
+            logger.info(f"Loading embedding model: {Config.EMBEDDING_MODEL}")
+            self.embedding_model = SentenceTransformer(Config.EMBEDDING_MODEL)
+            
+            # Pre-compute embeddings for all patterns
+            self.pattern_texts = []
+            for pattern in self.patterns:
+                # Combine pattern fields for better semantic matching
+                pattern_text = f"{pattern.get('pattern_title', '')} {pattern.get('pattern_name', '')} "
+                pattern_text += " ".join(pattern.get('belongs_when', []))
+                self.pattern_texts.append(pattern_text)
+            
+            logger.info(f"Computing embeddings for {len(self.pattern_texts)} patterns...")
+            self.pattern_embeddings = self.embedding_model.encode(self.pattern_texts, show_progress_bar=False)
+            logger.info(f"Embeddings initialized. Shape: {self.pattern_embeddings.shape}")
+        except Exception as e:
+            logger.error(f"Failed to initialize embeddings: {e}")
+            logger.warning("Falling back to using all patterns without filtering")
+            self.embedding_model = None
     
     def _validate_incident(self, incident: Dict) -> Tuple[bool, Optional[str]]:
         """
@@ -282,6 +320,47 @@ class PatternMatcher:
         
         raise ValueError("Could not extract valid JSON from LLM response")
     
+    def _get_top_k_patterns(self, incident: Dict, k: int = Config.TOP_K_PATTERNS) -> List[Dict]:
+        """
+        Filter patterns using cosine similarity to get top K most relevant patterns.
+        
+        Args:
+            incident: Incident details
+            k: Number of top patterns to return
+            
+        Returns:
+            List of top K most similar patterns
+        """
+        if self.embedding_model is None or self.pattern_embeddings is None:
+            logger.debug("Embedding model not available, using all patterns")
+            return self.patterns
+        
+        try:
+            # Create incident text for embedding
+            incident_text = f"{incident['title']} {incident['description']} {incident['category']} {incident['sub_category']}"
+            
+            # Compute incident embedding
+            incident_embedding = self.embedding_model.encode([incident_text], show_progress_bar=False)
+            
+            # Calculate cosine similarities
+            similarities = cosine_similarity(incident_embedding, self.pattern_embeddings)[0]
+            
+            # Get top K indices
+            top_k_indices = np.argsort(similarities)[-k:][::-1]
+            
+            # Get top K patterns with their similarity scores
+            top_patterns = [self.patterns[i] for i in top_k_indices]
+            top_scores = [similarities[i] for i in top_k_indices]
+            
+            logger.info(f"Filtered to top {k} patterns. Similarity scores: {[f'{s:.3f}' for s in top_scores[:5]]}...")
+            
+            return top_patterns
+            
+        except Exception as e:
+            logger.error(f"Error in pattern filtering: {e}")
+            logger.warning("Falling back to using all patterns")
+            return self.patterns
+    
     def match(self, incident: Dict) -> Dict:
         """
         Match an incident against patterns.
@@ -351,7 +430,14 @@ class PatternMatcher:
         Returns:
             Match result with confidence and reason
         """
-        pattern_text = json.dumps(self.patterns, indent=2)
+        # Filter patterns using cosine similarity if enabled
+        if Config.ENABLE_SIMILARITY_FILTER:
+            filtered_patterns = self._get_top_k_patterns(incident)
+            logger.debug(f"Using {len(filtered_patterns)} filtered patterns instead of {len(self.patterns)}")
+        else:
+            filtered_patterns = self.patterns
+        
+        pattern_text = json.dumps(filtered_patterns, indent=2)
         
         prompt = f"""You are a SENIOR ITSM INCIDENT CLASSIFICATION ENGINE.
 
