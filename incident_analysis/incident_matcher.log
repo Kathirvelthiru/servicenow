@@ -25,3 +25,12 @@
 2026-03-05 13:02:07 - incident_pattern_matcher_prod - INFO - Loaded 15 patterns from incident_patterns_top_15.json
 2026-03-05 13:02:08 - incident_pattern_matcher_prod - INFO - LLM initialized: llama3.1
 2026-03-05 13:02:08 - incident_pattern_matcher_prod - INFO - Database initialized: incident_matches.db
+2026-03-05 13:39:05 - incident_pattern_matcher_prod - INFO - Loaded 15 patterns from incident_patterns_top_15.json
+2026-03-05 13:39:05 - incident_pattern_matcher_prod - INFO - LLM initialized: llama3.1
+2026-03-05 13:39:05 - incident_pattern_matcher_prod - INFO - Database initialized: incident_matches.db
+2026-03-05 13:40:41 - incident_pattern_matcher_prod - INFO - Loaded 15 patterns from incident_patterns_top_15.json
+2026-03-05 13:40:41 - incident_pattern_matcher_prod - INFO - LLM initialized: llama3.1
+2026-03-05 13:40:41 - incident_pattern_matcher_prod - INFO - Database initialized: incident_matches.db
+2026-03-05 13:41:41 - incident_pattern_matcher_prod - INFO - Loaded 15 patterns from incident_patterns_top_15.json
+2026-03-05 13:41:41 - incident_pattern_matcher_prod - INFO - LLM initialized: llama3.1
+2026-03-05 13:41:41 - incident_pattern_matcher_prod - INFO - Database initialized: incident_matches.db

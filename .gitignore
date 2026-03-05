@@ -1,0 +1,55 @@
+# ----------------------------------------------------
+# Python / Streamlit / Backend ignore rules
+# ----------------------------------------------------
+
+# Bytecode / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Packaging & build artifacts
+build/
+dist/
+.eggs/
+*.egg-info/
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+.env/
+env/
+ENV/
+.uv/
+
+# Tooling metadata
+.pytest_cache/
+.mypy_cache/
+.coverage*
+coverage.xml
+htmlcov/
+
+# Streamlit cache & secrets
+.streamlit/
+.streamlit-secrets.toml
+
+# Local configuration & secrets
+*.env
+*.env.*
+.envrc
+
+# Logs & databases
+*.log
+*.sqlite3
+*.db
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# OS / Misc
+*.bak
+*.tmp
