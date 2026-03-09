@@ -112,15 +112,36 @@ col1, col2 = st.columns([1, 1])
 with col1:
     st.subheader("📝 Incident Details")
     
+    # Incident Title Dropdown
+    title_options = ["", "server issue", "database issue", "network issue", "application issue"]
+    selected_title = st.selectbox(
+        "Incident Title",
+        title_options,
+        help="Select the incident title from predefined options"
+    )
+    
+    # Set default values based on selection
+    if selected_title == "server issue":
+        default_description = "A server issue occurs when the server becomes unavailable, slow, or fails to process requests properly, causing disruption to applications, services, or user access. This can be due to hardware failure, network problems, high load, or software errors."
+        default_category = "banking"
+        default_sub_category = "banking"
+    elif selected_title == "network issue":
+        default_description = "A network issue occurs when there is a disruption or failure in network connectivity, preventing devices or systems from communicating properly. This can be caused by configuration errors, hardware faults, bandwidth problems, or connectivity failures."
+        default_category = "banking"
+        default_sub_category = "banking"
+    elif selected_title == "application issue":
+        default_description = "An application issue occurs when a software application fails to function as expected, such as crashes, errors, slow performance, or incorrect outputs, affecting user operations or business processes."
+        default_category = "banking"
+        default_sub_category = "banking"
+    else:
+        default_description = ""
+        default_category = ""
+        default_sub_category = ""
+    
     with st.form("incident_form"):
-        title = st.text_input(
-            "Incident Title",
-            placeholder="e.g., Database connection timeout",
-            help="Brief title of the incident"
-        )
-        
         description = st.text_area(
             "Description",
+            value=default_description,
             placeholder="Detailed description of the incident...",
             height=120,
             help="Provide a detailed description"
@@ -130,6 +151,7 @@ with col1:
         with col_a:
             category = st.text_input(
                 "Category",
+                value=default_category,
                 placeholder="e.g., Infrastructure",
                 help="Main category of the incident"
             )
@@ -137,6 +159,7 @@ with col1:
         with col_b:
             sub_category = st.text_input(
                 "Sub Category",
+                value=default_sub_category,
                 placeholder="e.g., Database",
                 help="Subcategory of the incident"
             )
@@ -152,12 +175,12 @@ with col2:
     
     if submit_btn:
         # Validate input
-        if not all([title, description, category, sub_category]):
+        if not all([selected_title, description, category, sub_category]):
             st.error("❌ All fields are required!")
         else:
             with st.spinner("🔄 Classifying incident..."):
                 incident = {
-                    "title": title,
+                    "title": selected_title,
                     "description": description,
                     "category": category,
                     "sub_category": sub_category
@@ -169,7 +192,7 @@ with col2:
                     # Add to history
                     history_entry = {
                         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                        "title": title,
+                        "title": selected_title,
                         "category": category,
                         "matched_pattern": result['matched_pattern'],
                         "confidence": result['confidence'],
