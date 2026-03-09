@@ -34,16 +34,6 @@
 2026-03-05 13:41:41 - incident_pattern_matcher_prod - INFO - Loaded 15 patterns from incident_patterns_top_15.json
 2026-03-05 13:41:41 - incident_pattern_matcher_prod - INFO - LLM initialized: llama3.1
 2026-03-05 13:41:41 - incident_pattern_matcher_prod - INFO - Database initialized: incident_matches.db
-2026-03-05 15:45:48 - incident_pattern_matcher_prod - INFO - Loaded 15 patterns from incident_patterns_top_15.json
-2026-03-05 15:45:48 - incident_pattern_matcher_prod - INFO - LLM initialized: llama3.1
-2026-03-05 15:45:48 - incident_pattern_matcher_prod - INFO - Database initialized: incident_matches.db
-2026-03-05 15:54:25 - incident_pattern_matcher_prod - INFO - Loaded 15 patterns from incident_patterns_top_15.json
-2026-03-05 15:54:26 - incident_pattern_matcher_prod - INFO - LLM initialized: llama3.1
-2026-03-05 15:54:26 - incident_pattern_matcher_prod - INFO - Database initialized: incident_matches.db
-2026-03-05 16:20:33 - incident_pattern_matcher_prod - INFO - Loaded 635 patterns from incident_patterns_final.json
-2026-03-05 16:20:33 - incident_pattern_matcher_prod - INFO - LLM initialized: llama3.1
-2026-03-05 16:20:33 - incident_pattern_matcher_prod - INFO - Loading embedding model: all-MiniLM-L6-v2
-2026-03-05 16:20:37 - incident_pattern_matcher_prod - INFO - Computing embeddings for 635 patterns...
-2026-03-05 16:20:42 - incident_pattern_matcher_prod - INFO - Embeddings initialized. Shape: (635, 384)
-2026-03-05 16:20:42 - incident_pattern_matcher_prod - INFO - Database initialized: incident_matches.db
-2026-03-05 16:27:54 - incident_pattern_matcher_prod - INFO - Filtered to top 15 patterns. Similarity scores: ['0.554', '0.543', '0.536', '0.523', '0.511']...
+2026-03-09 15:07:58 - incident_pattern_matcher_prod - INFO - Loaded 15 patterns from incident_patterns_top_15.json
+2026-03-09 15:07:58 - incident_pattern_matcher_prod - INFO - LLM initialized: llama3.1
+2026-03-09 15:07:58 - incident_pattern_matcher_prod - INFO - Database initialized: incident_matches.db
