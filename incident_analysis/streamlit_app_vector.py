@@ -60,8 +60,6 @@ st.markdown("""
 <div class="header">
     <h1>⚡ Vector-Only Incident Matcher</h1>
     <p>🚀 Instant classification using pure vector similarity - No LLM needed!</p>
-    <span class="speed-badge">100x FASTER</span>
-    <span class="speed-badge">10-50ms Response Time</span>
 </div>
 """, unsafe_allow_html=True)
 
@@ -74,9 +72,18 @@ if not st.session_state.matcher_ready:
 with st.sidebar:
     st.header("⚙️ Settings")
     
-    # Load patterns info
-    patterns = st.session_state.matcher.patterns
-    st.metric("Available Patterns", len(patterns))
+    # Load patterns from JSON file
+    try:
+        with open("incident_patterns_top_15.json", "r", encoding="utf-8") as f:
+            patterns = json.load(f)
+
+        st.subheader("Available Patterns (Top 15):")
+        with st.expander("View Patterns"):
+            for pattern in patterns:
+                st.markdown(f"**{pattern['pattern_name']}**")
+                st.caption(pattern['description'])
+    except Exception as e:
+        st.error(f"Failed to load patterns: {str(e)}")
     
     st.divider()
     
@@ -107,10 +114,23 @@ with st.sidebar:
     st.divider()
     
     # Performance comparison
-    st.subheader("⚡ Speed Comparison")
-    st.write("**Vector-Only:** ~10-50ms")
-    st.write("**With LLM:** ~2000-3000ms")
-    st.success("**100x faster!**")
+    # st.subheader("⚡ Speed Comparison")
+    # st.write("**Vector-Only:** ~10-50ms")
+    # st.write("**With LLM:** ~2000-3000ms")
+    # st.success("**100x faster!**")
+
+# Add buttons for matching methods
+st.subheader("Select Matching Method")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    if st.button("🔍 LLM-Based Matching"):
+        st.info("LLM-Based Matching selected.")
+
+with col2:
+    if st.button("⚡ Vector-Based Matching"):
+        st.info("Vector-Based Matching selected.")
 
 # Main content area
 col1, col2 = st.columns([1, 1])
@@ -171,7 +191,7 @@ with col1:
             )
         
         submit_btn = st.form_submit_button(
-            "⚡ Match Instantly (No LLM)",
+            "🔍 Search",
             use_container_width=True,
             type="primary"
         )
@@ -320,6 +340,5 @@ st.divider()
 st.markdown("""
 <div style="text-align: center; color: gray; font-size: 12px;">
     <p>⚡ Vector-Only Incident Matcher v3.0 | Pure Vector Similarity (No LLM)</p>
-    <p>100x faster than LLM-based classification | Response time: 10-50ms</p>
 </div>
 """, unsafe_allow_html=True)
