@@ -418,9 +418,11 @@ class VectorOnlyMatcher:
         for i, (idx, sim) in enumerate(zip(indices, similarities)):
             pattern = self.patterns[idx]
             title = pattern.get('pattern_title', pattern.get('pattern_name', f'Pattern {idx}'))
+            incident_id = pattern.get('incident_ID', idx)  # Use incident_ID from pattern, fallback to index
             
             top_matches.append({
                 "rank": i + 1,
+                "incident_ID": incident_id,
                 "pattern_title": title,
                 "similarity_score": round(sim, 4),
                 "confidence": self._get_confidence(sim),

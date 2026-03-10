@@ -107,11 +107,11 @@ def generate_patterns(state: PatternState):
         for i, inc in enumerate(chunk):
             compact_incidents.append(
                 f"{i+1}. "
+                f"ID: {inc.get('Incident_ID','')} | "
                 f"{inc.get('Title','')} | "
-                f"{inc.get('Description','')} | "
-                f"{inc.get('Top Category','')} | "
-                f"{inc.get('Sub Category','')} | "
-                f"{inc.get('Resolution Notes','')}"
+                f"{inc.get('Short Description','')} | "
+                f"{inc.get('Category','')} | "
+                f"{inc.get('Resolution_Notes','')}"
             )
 
         prompt = f"""
@@ -125,16 +125,17 @@ STRICT RULES:
 - Do NOT summarize incidents
 - Do NOT merge unrelated problems
 - Output ONLY JSON objects (multiple allowed)
+- MUST include the incident_ID field from the incident data
 
 FORMAT FOR EACH PATTERN:
 
 {{
+  "incident_ID": "Incident ID from the data",
   "pattern_title": "Clear issue name",
   "belongs_when": [
     "Title contains ...",
     "Description mentions ...",
-    "Top Category is ...",
-    "Sub Category is ..."
+    "Category is ..."
   ],
   "resolution_notes": [
     "Step 1",

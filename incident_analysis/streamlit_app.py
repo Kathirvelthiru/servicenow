@@ -56,21 +56,23 @@ st.markdown("""
 # Initialize session state
 if 'matcher' not in st.session_state:
     try:
-        with st.spinner("⚡ Initializing Vector-Only Matcher (No LLM)..."):
+        with st.spinner("⚡ Initializing Vector-Only Matcher..."):
             st.session_state.matcher = VectorOnlyMatcher()
         st.session_state.matcher_ready = True
     except Exception as e:
         st.session_state.matcher_ready = False
         st.session_state.error = str(e)
 
-if 'history' not in st.session_state:
-    st.session_state.history = []
+# Force reload button for development
+if st.sidebar.button("🔄 Reload Matcher"):
+    if 'matcher' in st.session_state:
+        del st.session_state.matcher
+    st.rerun()
 
 # Header
 st.markdown("""
 <div class="header">
     <h1>🔍 Incident Pattern Matcher</h1>
-    <p>⚡ Ultra-fast classification with vector similarity (No LLM - 100x faster!)</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -95,18 +97,7 @@ with st.sidebar:
             st.write(f"**{i}. {pattern_name}**")
             st.caption(pattern_desc)
     
-    st.divider()
-    
-    # History
-    st.subheader("📊 Classification History")
-    history_count = len(st.session_state.history)
-    st.metric("Total Classifications", history_count)
-    
-    if st.button("🗑️ Clear History", key="clear_history"):
-        st.session_state.history = []
-        st.rerun()
-
-# Main content area
+    # Main content area
 col1, col2 = st.columns([1, 1])
 
 with col1:
@@ -165,7 +156,7 @@ with col1:
             )
         
         submit_btn = st.form_submit_button(
-            "⚡ Match Instantly (No LLM)",
+            "⚡ Match Instantly",
             width="stretch",
             type="primary"
         )
@@ -189,18 +180,6 @@ with col2:
                 try:
                     result = st.session_state.matcher.match(incident, return_top_k=5)
                     
-                    # Add to history
-                    history_entry = {
-                        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                        "title": selected_title,
-                        "category": category,
-                        "matched_pattern": result['matched_pattern'],
-                        "confidence": result['confidence'],
-                        "similarity_score": result['similarity_score'],
-                        "total_time_ms": result['timing']['total_ms']
-                    }
-                    st.session_state.history.append(history_entry)
-                    
                     # Display result
                     st.success("✅ Matches Found Instantly!")
                     
@@ -216,7 +195,7 @@ with col2:
                         st.metric(
                             "⏱️ Total Time",
                             f"{result['timing']['total_ms']:.1f}ms",
-                            help="Total matching time (no LLM!)"
+                            help="Total matching time"
                         )
                     
                     st.markdown("---")
@@ -267,7 +246,9 @@ with col2:
                                     else:
                                         conf_emoji = "🔴"
                                     
-                                    st.markdown(f"**{match['pattern_title']}** {conf_emoji}")
+                                    # Display with incident ID if available
+                                    incident_id = match.get('incident_ID', 'N/A')
+                                    st.markdown(f"**ID: {incident_id} - {match['pattern_title']}** {conf_emoji}")
                                     st.progress(match['similarity_score'])
                                     st.caption(f"Similarity: {match['similarity_score']:.4f} | Confidence: {match['confidence']}")
                                 
@@ -276,79 +257,11 @@ with col2:
                 except Exception as e:
                     st.error(f"❌ Classification failed: {str(e)}")
 
-# History tab
-st.divider()
-st.subheader("📋 Classification History")
-
-if st.session_state.history:
-    # Convert history to DataFrame
-    df = pd.DataFrame(st.session_state.history)
-    
-    # Display stats
-    stats_col1, stats_col2, stats_col3, stats_col4 = st.columns(4)
-    
-    with stats_col1:
-        st.metric("Total", len(df))
-    
-    with stats_col2:
-        matches = (df['matched_pattern'] != 'No Match').sum()
-        st.metric("Matched", matches)
-    
-    with stats_col3:
-        high_conf = (df['confidence'] == ConfidenceLevel.HIGH).sum()
-        st.metric("High Confidence", high_conf)
-    
-    with stats_col4:
-        no_match = (df['matched_pattern'] == 'No Match').sum()
-        st.metric("No Match", no_match)
-    
-    # Display table
-    st.dataframe(
-        df,
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            "timestamp": st.column_config.TextColumn("Time", width="medium"),
-            "title": st.column_config.TextColumn("Incident Title", width="large"),
-            "category": st.column_config.TextColumn("Category", width="medium"),
-            "matched_pattern": st.column_config.TextColumn("Top Match", width="medium"),
-            "confidence": st.column_config.TextColumn("Confidence", width="small"),
-            "similarity_score": st.column_config.NumberColumn("Similarity", width="small", format="%.4f"),
-            "total_time_ms": st.column_config.NumberColumn("Time (ms)", width="small", format="%.1f")
-        }
-    )
-    
-    # Export option
-    col_exp1, col_exp2 = st.columns(2)
-    
-    with col_exp1:
-        csv = df.to_csv(index=False)
-        st.download_button(
-            label="📥 Download as CSV",
-            data=csv,
-            file_name=f"incident_history_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
-            mime="text/csv",
-            use_container_width=True
-        )
-    
-    with col_exp2:
-        json_data = df.to_json(orient='records', indent=2)
-        st.download_button(
-            label="📥 Download as JSON",
-            data=json_data,
-            file_name=f"incident_history_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
-            mime="application/json",
-            use_container_width=True
-        )
-
-else:
-    st.info("💡 No classifications yet. Submit an incident above to get started!")
-
 # Footer
 st.divider()
 st.markdown("""
 <div style="text-align: center; color: gray; font-size: 12px;">
-    <p>⚡ Incident Pattern Matcher v3.0 | Vector-Only (No LLM)</p>
-    <p>Last updated: 2026-03-05 | 100x faster - Results in milliseconds!</p>
+    <p>⚡ Incident Pattern Matcher v3.0 | Vector-Only</p>
+    <p>Last updated: 2026-03-05 | Results in milliseconds!</p>
 </div>
 """, unsafe_allow_html=True)
