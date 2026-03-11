@@ -5,16 +5,21 @@ Ultra-fast incident classification using ONLY vector similarity.
 No LLM involved - results in milliseconds instead of seconds!
 
 Performance: ~10-50ms total (100x faster than LLM version)
+
+Supports two modes:
+1. Pattern-based: Match against predefined patterns (incident_patterns_final.json)
+2. Incident-based: Match against train incidents with embeddings (train_with_embeddings.json)
 """
 
 import json
 import time
 import logging
 from datetime import datetime
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 from pathlib import Path
 from enum import Enum
 import sqlite3
+import numpy as np
 
 try:
     from sentence_transformers import SentenceTransformer
@@ -34,6 +39,7 @@ except ImportError:
 class Config:
     """Application configuration"""
     PATTERN_FILE: str = "incident_patterns_final.json"
+    TRAIN_EMBEDDINGS_FILE: str = "train_with_embeddings.json"
     LOG_FILE: str = "incident_matcher_vector.log"
     LOG_LEVEL: int = logging.INFO
     DB_FILE: str = "incident_matches_vector.db"
@@ -42,10 +48,12 @@ class Config:
     TOP_K_RESULTS: int = 5
     CHROMA_PERSIST_DIR: str = "./chroma_patterns_db"
     CHROMA_COLLECTION_NAME: str = "incident_patterns"
+    CHROMA_INCIDENTS_COLLECTION: str = "train_incidents"
     
     # Confidence thresholds based on similarity scores
     HIGH_CONFIDENCE_THRESHOLD: float = 0.75
     MEDIUM_CONFIDENCE_THRESHOLD: float = 0.60
+    EXACT_MATCH_THRESHOLD: float = 0.95  # For near-exact matches
 
 
 class ConfidenceLevel(str, Enum):
@@ -470,6 +478,168 @@ class VectorOnlyMatcher:
 
 
 # =====================================================
+# INCIDENT-BASED MATCHER (Using Train Embeddings)
+# =====================================================
+
+class IncidentMatcher:
+    """Match incidents against train set using pre-computed embeddings"""
+    
+    def __init__(self, train_file: str = Config.TRAIN_EMBEDDINGS_FILE,
+                 embedding_model: str = Config.EMBEDDING_MODEL):
+        self.train_file = train_file
+        self.train_incidents = None
+        self.train_embeddings = None
+        self.embedding_model = None
+        self.embedding_model_name = embedding_model
+        self.timer = TimingLogger("IncidentMatcher")
+        
+        print("\n" + "="*60)
+        print("🚀 INITIALIZING INCIDENT-BASED MATCHER")
+        print("="*60)
+        
+        self._load_train_data()
+        self._load_embedding_model()
+        
+        print("✅ Incident Matcher ready!")
+        print("="*60 + "\n")
+    
+    def _load_train_data(self):
+        """Load train incidents with pre-computed embeddings"""
+        self.timer.start("Loading train data with embeddings")
+        
+        if not Path(self.train_file).exists():
+            raise FileNotFoundError(f"Train file not found: {self.train_file}")
+        
+        with open(self.train_file, "r", encoding="utf-8") as f:
+            self.train_incidents = json.load(f)
+        
+        # Extract embeddings as numpy array for fast computation
+        self.train_embeddings = np.array([inc['embedding'] for inc in self.train_incidents])
+        
+        self.timer.log_step(f"Loaded {len(self.train_incidents)} train incidents")
+        self.timer.log_step(f"Embeddings shape: {self.train_embeddings.shape}")
+        self.timer.end("Loading train data with embeddings")
+    
+    def _load_embedding_model(self):
+        """Load SentenceTransformer model for encoding new incidents"""
+        self.timer.start("Loading embedding model")
+        self.embedding_model = SentenceTransformer(self.embedding_model_name)
+        self.timer.end("Loading embedding model")
+    
+    def _cosine_similarity(self, query_embedding: np.ndarray) -> np.ndarray:
+        """Compute cosine similarity between query and all train embeddings"""
+        # Normalize vectors
+        query_norm = query_embedding / np.linalg.norm(query_embedding)
+        train_norms = self.train_embeddings / np.linalg.norm(self.train_embeddings, axis=1, keepdims=True)
+        
+        # Compute cosine similarity
+        similarities = np.dot(train_norms, query_norm)
+        return similarities
+    
+    def _get_confidence(self, similarity_score: float) -> str:
+        """Determine confidence level based on similarity score"""
+        if similarity_score >= Config.EXACT_MATCH_THRESHOLD:
+            return ConfidenceLevel.HIGH
+        elif similarity_score >= Config.HIGH_CONFIDENCE_THRESHOLD:
+            return ConfidenceLevel.HIGH
+        elif similarity_score >= Config.MEDIUM_CONFIDENCE_THRESHOLD:
+            return ConfidenceLevel.MEDIUM
+        else:
+            return ConfidenceLevel.LOW
+    
+    def match(self, incident: Dict, return_top_k: int = Config.TOP_K_RESULTS) -> Dict:
+        """
+        Match incident against train set using embedding similarity.
+        
+        Args:
+            incident: Dictionary with short_description, description, etc.
+            return_top_k: Number of top matches to return
+            
+        Returns:
+            Dictionary with top matches, timing, and confidence
+        """
+        total_start = time.time()
+        timing = {}
+        
+        # Create context from incident
+        short_desc = incident.get('short_description', incident.get('title', ''))
+        desc = incident.get('description', '')
+        context = f"{short_desc} {desc}".strip()
+        
+        print("\n" + "-"*60)
+        print(f"🔍 MATCHING INCIDENT: {short_desc[:50]}...")
+        print("-"*60)
+        
+        # Generate embedding for query incident
+        self.timer.start("Generating query embedding")
+        query_embedding = self.embedding_model.encode([context], show_progress_bar=False)[0]
+        embed_time = self.timer.end("Generating query embedding")
+        timing['embedding_time'] = embed_time
+        
+        # Compute similarities
+        self.timer.start("Computing cosine similarities")
+        similarities = self._cosine_similarity(query_embedding)
+        sim_time = self.timer.end("Computing cosine similarities")
+        timing['similarity_time'] = sim_time
+        
+        # Get top K matches
+        self.timer.start("Ranking results")
+        top_indices = np.argsort(similarities)[::-1][:return_top_k]
+        
+        top_matches = []
+        for rank, idx in enumerate(top_indices, 1):
+            train_inc = self.train_incidents[idx]
+            sim_score = float(similarities[idx])
+            
+            top_matches.append({
+                "rank": rank,
+                "number": train_inc.get('number', ''),
+                "short_description": train_inc.get('short_description', ''),
+                "problem_id": train_inc.get('problem_id', ''),
+                "category": train_inc.get('category', ''),
+                "subcategory": train_inc.get('subcategory', ''),
+                "similarity_score": round(sim_score, 4),
+                "confidence": self._get_confidence(sim_score),
+                "is_exact_match": sim_score >= Config.EXACT_MATCH_THRESHOLD
+            })
+        
+        self.timer.end("Ranking results")
+        
+        # Display results
+        print("\n📊 TOP MATCHING INCIDENTS:")
+        print("-"*60)
+        for match in top_matches:
+            score_bar = "█" * int(match['similarity_score'] * 20)
+            conf_emoji = "🟢" if match['confidence'] == ConfidenceLevel.HIGH else "🟡" if match['confidence'] == ConfidenceLevel.MEDIUM else "🔴"
+            exact = " ⭐EXACT" if match['is_exact_match'] else ""
+            print(f"  {match['rank']}. [{match['similarity_score']:.4f}] {score_bar} {conf_emoji}{exact}")
+            print(f"     {match['number']}: {match['short_description'][:50]}")
+            print(f"     Problem ID: {match['problem_id']}")
+        print("-"*60)
+        
+        # Calculate total time
+        total_time = time.time() - total_start
+        timing['total_time'] = total_time
+        
+        result = {
+            "matched_incident": top_matches[0] if top_matches else None,
+            "confidence": top_matches[0]['confidence'] if top_matches else ConfidenceLevel.LOW,
+            "similarity_score": top_matches[0]['similarity_score'] if top_matches else 0.0,
+            "is_exact_match": top_matches[0]['is_exact_match'] if top_matches else False,
+            "top_matches": top_matches,
+            "timing": {
+                'embedding_ms': round(timing.get('embedding_time', 0) * 1000, 2),
+                'similarity_ms': round(timing.get('similarity_time', 0) * 1000, 2),
+                'total_ms': round(total_time * 1000, 2)
+            }
+        }
+        
+        print(self.timer.summary())
+        
+        return result
+
+
+# =====================================================
 # INTERACTIVE MODE
 # =====================================================
 
@@ -527,13 +697,69 @@ def interactive_mode():
     return 0
 
 
+def incident_match_mode():
+    """Interactive mode for incident-based matching"""
+    print("\n" + "="*60)
+    print("⚡ INCIDENT MATCHER - Match against Train Set!")
+    print("="*60)
+    
+    matcher = IncidentMatcher()
+    
+    while True:
+        print("\n" + "="*60)
+        print("Enter Incident Details (or 'quit' to exit)")
+        print("="*60)
+        
+        try:
+            short_desc = input("📝 Short Description: ").strip()
+            if short_desc.lower() == 'quit':
+                print("\n👋 Exiting...")
+                break
+            
+            incident = {
+                "short_description": short_desc,
+                "description": input("📄 Description: ").strip(),
+            }
+            
+            if not incident['short_description']:
+                print("❌ Short description is required!")
+                continue
+            
+            # Match
+            result = matcher.match(incident, return_top_k=5)
+            
+            # Display result
+            print("\n" + "="*60)
+            print("🎯 TOP 5 MATCHING INCIDENTS")
+            print("="*60)
+            for match in result['top_matches']:
+                exact = " ⭐EXACT MATCH" if match['is_exact_match'] else ""
+                print(f"{match['rank']}. {match['number']}: {match['short_description'][:50]}{exact}")
+                print(f"   Problem ID: {match['problem_id']} | Similarity: {match['similarity_score']:.4f}")
+            print("-"*60)
+            print(f"⏱️  Total Time: {result['timing']['total_ms']:.2f}ms")
+            print("="*60)
+            
+        except KeyboardInterrupt:
+            print("\n\n👋 Interrupted by user.")
+            break
+        except Exception as e:
+            print(f"\n❌ Error: {e}")
+            logger.exception("Error in incident match mode")
+    
+    return 0
+
+
 if __name__ == "__main__":
     import sys
     
-    if len(sys.argv) > 1 and sys.argv[1] == "rebuild":
-        print("🔄 Rebuilding ChromaDB index...")
-        matcher = VectorOnlyMatcher(force_rebuild=True)
-        print("✅ ChromaDB index rebuilt successfully!")
-        exit(0)
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "rebuild":
+            print("🔄 Rebuilding ChromaDB index...")
+            matcher = VectorOnlyMatcher(force_rebuild=True)
+            print("✅ ChromaDB index rebuilt successfully!")
+            exit(0)
+        elif sys.argv[1] == "incident":
+            exit(incident_match_mode())
     
     exit(interactive_mode())

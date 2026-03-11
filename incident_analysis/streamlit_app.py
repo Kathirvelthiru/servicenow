@@ -1,19 +1,56 @@
 """
-Streamlit UI for Incident Pattern Matcher
-==========================================
-Interactive web-based interface for incident classification
+Streamlit UI for Incident Matcher
+=====================================
+Interactive web-based interface for incident matching.
+Matches test incidents against train incidents using vector similarity.
+
+Usage:
+1. Place train.csv and test.csv in the incident_analysis folder
+2. Run: streamlit run streamlit_app.py
+3. Select a test incident from dropdown to find matching train incidents
 """
 
 import streamlit as st
 import json
-from datetime import datetime
+import time
 from pathlib import Path
-import pandas as pd
-from incident_matcher_vector_only import VectorOnlyMatcher, ConfidenceLevel
+
+try:
+    import chromadb
+except ImportError:
+    raise ImportError("Please install: pip install chromadb")
+
+try:
+    from sentence_transformers import CrossEncoder
+    import torch
+except ImportError:
+    raise ImportError("Please install: pip install sentence-transformers torch")
+
+# Configuration
+class Config:
+    TRAIN_FILE = "train_with_embeddings.json"
+    TEST_FILE = "test_with_embeddings.json"
+    CHROMA_PERSIST_DIR = "./chroma_incidents_db"
+    CHROMA_COLLECTION_NAME = "train_incidents"
+    EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+    CROSS_ENCODER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+    HIGH_CONFIDENCE_THRESHOLD = 0.75
+    MEDIUM_CONFIDENCE_THRESHOLD = 0.60
+    EXACT_MATCH_THRESHOLD = 0.95
+    # CrossEncoder thresholds (different scale than cosine similarity)
+    CE_HIGH_THRESHOLD = 0.7
+    CE_MEDIUM_THRESHOLD = 0.4
+
+
+class ConfidenceLevel:
+    HIGH = "High"
+    MEDIUM = "Medium"
+    LOW = "Low"
+
 
 # Page configuration
 st.set_page_config(
-    page_title="Incident Pattern Matcher",
+    page_title="Incident Matcher",
     page_icon="🔍",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -29,239 +66,425 @@ st.markdown("""
         color: white;
         margin-bottom: 20px;
     }
-    .success-box {
+    .exact-match {
+        background-color: #d4edda;
+        border: 2px solid #28a745;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 5px 0;
+    }
+    .high-match {
         background-color: #d4edda;
         border: 1px solid #c3e6cb;
         border-radius: 5px;
-        padding: 15px;
-        margin: 10px 0;
+        padding: 10px;
+        margin: 5px 0;
     }
-    .warning-box {
+    .medium-match {
         background-color: #fff3cd;
         border: 1px solid #ffeeba;
         border-radius: 5px;
-        padding: 15px;
-        margin: 10px 0;
+        padding: 10px;
+        margin: 5px 0;
     }
-    .error-box {
+    .low-match {
         background-color: #f8d7da;
         border: 1px solid #f5c6cb;
         border-radius: 5px;
-        padding: 15px;
-        margin: 10px 0;
+        padding: 10px;
+        margin: 5px 0;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize session state
-if 'matcher' not in st.session_state:
-    try:
-        with st.spinner("⚡ Initializing Vector-Only Matcher..."):
-            st.session_state.matcher = VectorOnlyMatcher()
-        st.session_state.matcher_ready = True
-    except Exception as e:
-        st.session_state.matcher_ready = False
-        st.session_state.error = str(e)
 
-# Force reload button for development
-if st.sidebar.button("🔄 Reload Matcher"):
-    if 'matcher' in st.session_state:
-        del st.session_state.matcher
+@st.cache_resource
+def load_data():
+    """Load train and test data with embeddings"""
+    base_path = Path(__file__).parent
+    
+    train_file = base_path / Config.TRAIN_FILE
+    test_file = base_path / Config.TEST_FILE
+    
+    if not train_file.exists():
+        raise FileNotFoundError(f"Train file not found: {train_file}")
+    if not test_file.exists():
+        raise FileNotFoundError(f"Test file not found: {test_file}")
+    
+    with open(train_file, 'r', encoding='utf-8') as f:
+        train_data = json.load(f)
+    
+    with open(test_file, 'r', encoding='utf-8') as f:
+        test_data = json.load(f)
+    
+    return train_data, test_data
+
+
+@st.cache_resource
+def init_chroma_db(_train_data):
+    """Initialize ChromaDB with train embeddings"""
+    base_path = Path(__file__).parent
+    persist_dir = str(base_path / Config.CHROMA_PERSIST_DIR)
+    
+    # Initialize ChromaDB client
+    client = chromadb.PersistentClient(path=persist_dir)
+    
+    # Check if collection exists and has correct count
+    existing_collections = [c.name for c in client.list_collections()]
+    
+    if Config.CHROMA_COLLECTION_NAME in existing_collections:
+        collection = client.get_collection(name=Config.CHROMA_COLLECTION_NAME)
+        if collection.count() == len(_train_data):
+            return client, collection
+        # Delete and recreate if count mismatch
+        client.delete_collection(Config.CHROMA_COLLECTION_NAME)
+    
+    # Create new collection
+    collection = client.create_collection(
+        name=Config.CHROMA_COLLECTION_NAME,
+        metadata={"hnsw:space": "cosine"}
+    )
+    
+    # Add train embeddings
+    ids = [f"train_{i}" for i in range(len(_train_data))]
+    embeddings = [inc['embedding'] for inc in _train_data]
+    metadatas = [
+        {
+            "number": inc.get('number', ''),
+            "short_description": inc.get('short_description', ''),
+            "problem_id": str(inc.get('problem_id', '')),
+            "category": inc.get('category', ''),
+            "subcategory": inc.get('subcategory', ''),
+            "index": i
+        }
+        for i, inc in enumerate(_train_data)
+    ]
+    documents = [inc.get('context', '') for inc in _train_data]
+    
+    collection.add(
+        ids=ids,
+        embeddings=embeddings,
+        metadatas=metadatas,
+        documents=documents
+    )
+    
+    return client, collection
+
+
+def get_confidence(similarity_score: float) -> str:
+    """Determine confidence level based on cosine similarity score"""
+    if similarity_score >= Config.EXACT_MATCH_THRESHOLD:
+        return ConfidenceLevel.HIGH
+    elif similarity_score >= Config.HIGH_CONFIDENCE_THRESHOLD:
+        return ConfidenceLevel.HIGH
+    elif similarity_score >= Config.MEDIUM_CONFIDENCE_THRESHOLD:
+        return ConfidenceLevel.MEDIUM
+    else:
+        return ConfidenceLevel.LOW
+
+
+def get_ce_confidence(ce_score: float) -> str:
+    """Determine confidence level based on CrossEncoder score"""
+    if ce_score >= Config.CE_HIGH_THRESHOLD:
+        return ConfidenceLevel.HIGH
+    elif ce_score >= Config.CE_MEDIUM_THRESHOLD:
+        return ConfidenceLevel.MEDIUM
+    else:
+        return ConfidenceLevel.LOW
+
+
+@st.cache_resource
+def load_cross_encoder():
+    """Load CrossEncoder model for reranking"""
+    # Note: ms-marco model outputs logits, we'll apply sigmoid manually for better control
+    return CrossEncoder(Config.CROSS_ENCODER_MODEL)
+
+
+def match_incident(test_embedding: list, test_context: str, collection, train_data: list, 
+                   cross_encoder, top_k: int = 5, use_reranking: bool = True) -> dict:
+    """
+    Match test incident against train embeddings in ChromaDB.
+    
+    Two-stage process:
+    1. Retrieve top-K candidates using cosine similarity (fast)
+    2. Rerank using CrossEncoder for better accuracy (slower but more accurate)
+    """
+    start_time = time.time()
+    
+    # Stage 1: Retrieve more candidates than needed for reranking
+    retrieve_k = top_k * 3 if use_reranking else top_k  # Get 3x candidates for reranking
+    
+    results = collection.query(
+        query_embeddings=[test_embedding],
+        n_results=retrieve_k,
+        include=["metadatas", "distances", "documents"]
+    )
+    
+    retrieval_time = time.time() - start_time
+    
+    # Build candidate list
+    candidates = []
+    for i, (metadata, distance, document) in enumerate(zip(
+        results['metadatas'][0], 
+        results['distances'][0],
+        results['documents'][0]
+    )):
+        cosine_sim = 1 - distance
+        idx = metadata['index']
+        train_inc = train_data[idx]
+        
+        candidates.append({
+            "number": metadata['number'],
+            "short_description": metadata['short_description'],
+            "problem_id": metadata['problem_id'],
+            "category": metadata['category'],
+            "subcategory": metadata['subcategory'],
+            "cosine_score": round(cosine_sim, 4),
+            "context": document,
+            "full_data": train_inc
+        })
+    
+    # Stage 2: Rerank with CrossEncoder
+    rerank_time = 0
+    if use_reranking and cross_encoder is not None:
+        rerank_start = time.time()
+        
+        # Create pairs for CrossEncoder: (query, candidate)
+        pairs = [(test_context, c['context']) for c in candidates]
+        
+        # Debug: Check if pairs have content
+        if not test_context or not test_context.strip():
+            # Fallback: use short_description if context is empty
+            for c in candidates:
+                c['ce_score'] = None
+                c['confidence'] = get_confidence(c['cosine_score'])
+        else:
+            # Get CrossEncoder scores (raw logits)
+            ce_scores = cross_encoder.predict(pairs)
+            
+            # Apply sigmoid to normalize logits to [0, 1]
+            import math
+            def sigmoid(x):
+                return 1 / (1 + math.exp(-x))
+            
+            # Add CE scores to candidates
+            for i, score in enumerate(ce_scores):
+                raw_logit = float(score)
+                normalized_score = sigmoid(raw_logit)
+                candidates[i]['ce_score'] = normalized_score
+                candidates[i]['ce_logit'] = raw_logit  # Keep raw logit for debugging
+                candidates[i]['confidence'] = get_ce_confidence(normalized_score)
+            
+            # Sort by CrossEncoder score (descending)
+            candidates.sort(key=lambda x: x['ce_score'], reverse=True)
+        
+        rerank_time = time.time() - rerank_start
+    else:
+        # No reranking - use cosine similarity
+        for c in candidates:
+            c['ce_score'] = None
+            c['confidence'] = get_confidence(c['cosine_score'])
+    
+    # Take top K after reranking
+    top_matches = candidates[:top_k]
+    
+    # Add ranks
+    for i, match in enumerate(top_matches):
+        match['rank'] = i + 1
+        match['is_exact_match'] = (match['ce_score'] or match['cosine_score']) >= Config.CE_HIGH_THRESHOLD
+    
+    total_time = time.time() - start_time
+    
+    return {
+        "top_matches": top_matches,
+        "timing": {
+            "retrieval_ms": round(retrieval_time * 1000, 2),
+            "rerank_ms": round(rerank_time * 1000, 2),
+            "total_ms": round(total_time * 1000, 2)
+        },
+        "reranking_used": use_reranking
+    }
+
+
+# Initialize data, ChromaDB, and CrossEncoder
+try:
+    with st.spinner("⚡ Loading data, ChromaDB, and CrossEncoder..."):
+        train_data, test_data = load_data()
+        chroma_client, chroma_collection = init_chroma_db(train_data)
+        cross_encoder = load_cross_encoder()
+    data_ready = True
+except Exception as e:
+    data_ready = False
+    init_error = str(e)
+
+# Force reload button
+if st.sidebar.button("🔄 Reload Data"):
+    st.cache_resource.clear()
     st.rerun()
 
 # Header
 st.markdown("""
 <div class="header">
-    <h1>🔍 Incident Pattern Matcher</h1>
+    <h1>🔍 Incident Matcher</h1>
+    <p>Match test incidents against train incidents using vector similarity</p>
 </div>
 """, unsafe_allow_html=True)
 
-# Check if matcher is ready
-if not st.session_state.matcher_ready:
-    st.error(f"❌ Failed to initialize Pattern Matcher: {st.session_state.error}")
-    st.info("Make sure Ollama is running and the pattern file exists.")
+# Check if data is ready
+if not data_ready:
+    st.error(f"❌ Failed to initialize: {init_error}")
+    st.info("Make sure train_with_embeddings.json and test_with_embeddings.json exist.")
     st.stop()
 
 # Sidebar
 with st.sidebar:
+    st.header("📊 Data Statistics")
+    st.metric("Train Incidents", len(train_data))
+    st.metric("Test Incidents", len(test_data))
+    st.metric("ChromaDB Collection", chroma_collection.count())
+    
+    st.divider()
     st.header("⚙️ Settings")
-    
-    # Load patterns info
-    patterns = st.session_state.matcher.patterns
-    st.metric("Available Patterns", len(patterns))
-    
-    with st.expander("📋 View Available Patterns"):
-        for i, pattern in enumerate(patterns, 1):
-            pattern_name = pattern.get('name', 'Unknown')
-            pattern_desc = pattern.get('description', 'No description')
-            st.write(f"**{i}. {pattern_name}**")
-            st.caption(pattern_desc)
-    
-    # Main content area
+    top_k = st.slider("Top K Results", min_value=1, max_value=10, value=5)
+    use_reranking = st.checkbox("Use CrossEncoder Reranking", value=True, 
+                                 help="Rerank results using CrossEncoder for better accuracy")
+
+# Main content area
 col1, col2 = st.columns([1, 1])
 
 with col1:
-    st.subheader("📝 Incident Details")
+    st.subheader("📝 Select Test Incident")
     
-    # Incident Title Dropdown
-    title_options = ["", "server issue", "database issue", "network issue", "application issue"]
-    selected_title = st.selectbox(
-        "Incident Title",
-        title_options,
-        help="Select the incident title from predefined options"
+    # Create dropdown options from test incidents
+    test_options = {f"{inc['number']}: {inc['short_description'][:50]}...": i for i, inc in enumerate(test_data)}
+    
+    selected_test = st.selectbox(
+        "Test Incident ID",
+        options=[""] + list(test_options.keys()),
+        help="Select a test incident to find matching train incidents"
     )
     
-    # Set default values based on selection
-    if selected_title == "server issue":
-        default_description = "A server issue occurs when the server becomes unavailable, slow, or fails to process requests properly, causing disruption to applications, services, or user access. This can be due to hardware failure, network problems, high load, or software errors."
-        default_category = "banking"
-        default_sub_category = "banking"
-    elif selected_title == "network issue":
-        default_description = "A network issue occurs when there is a disruption or failure in network connectivity, preventing devices or systems from communicating properly. This can be caused by configuration errors, hardware faults, bandwidth problems, or connectivity failures."
-        default_category = "banking"
-        default_sub_category = "banking"
-    elif selected_title == "application issue":
-        default_description = "An application issue occurs when a software application fails to function as expected, such as crashes, errors, slow performance, or incorrect outputs, affecting user operations or business processes."
-        default_category = "banking"
-        default_sub_category = "banking"
+    if selected_test:
+        test_idx = test_options[selected_test]
+        test_incident = test_data[test_idx]
+        
+        st.markdown("### Selected Incident Details")
+        st.write(f"**Number:** {test_incident['number']}")
+        st.write(f"**Short Description:** {test_incident['short_description']}")
+        st.write(f"**Description:** {test_incident['description']}")
+        st.write(f"**Category:** {test_incident['category']}")
+        st.write(f"**Subcategory:** {test_incident['subcategory']}")
+        
+        match_btn = st.button("⚡ Find Matching Incidents", type="primary", use_container_width=True)
     else:
-        default_description = ""
-        default_category = ""
-        default_sub_category = ""
-    
-    with st.form("incident_form"):
-        description = st.text_area(
-            "Description",
-            value=default_description,
-            placeholder="Detailed description of the incident...",
-            height=120,
-            help="Provide a detailed description"
-        )
-        
-        col_a, col_b = st.columns(2)
-        with col_a:
-            category = st.text_input(
-                "Category",
-                value=default_category,
-                placeholder="e.g., Infrastructure",
-                help="Main category of the incident"
-            )
-        
-        with col_b:
-            sub_category = st.text_input(
-                "Sub Category",
-                value=default_sub_category,
-                placeholder="e.g., Database",
-                help="Subcategory of the incident"
-            )
-        
-        submit_btn = st.form_submit_button(
-            "⚡ Match Instantly",
-            width="stretch",
-            type="primary"
-        )
+        match_btn = False
 
 with col2:
-    st.subheader("📊 Classification Result")
+    st.subheader("📊 Matching Results")
     
-    if submit_btn:
-        # Validate input
-        if not all([selected_title, description, category, sub_category]):
-            st.error("❌ All fields are required!")
-        else:
-            with st.spinner("🔄 Classifying incident..."):
-                incident = {
-                    "title": selected_title,
-                    "description": description,
-                    "category": category,
-                    "sub_category": sub_category
-                }
+    if selected_test and match_btn:
+        with st.spinner("🔄 Finding matching incidents..."):
+            try:
+                # Get test incident embedding and context
+                test_embedding = test_incident['embedding']
+                test_context = test_incident['context']
                 
-                try:
-                    result = st.session_state.matcher.match(incident, return_top_k=5)
-                    
-                    # Display result
-                    st.success("✅ Matches Found Instantly!")
-                    
-                    # Performance metrics
-                    perf_col1, perf_col2 = st.columns(2)
-                    with perf_col1:
-                        st.metric(
-                            "⚡ Vector Search",
-                            f"{result['timing']['vector_search_ms']:.1f}ms",
-                            help="Time for ChromaDB similarity search"
-                        )
-                    with perf_col2:
-                        st.metric(
-                            "⏱️ Total Time",
-                            f"{result['timing']['total_ms']:.1f}ms",
-                            help="Total matching time"
-                        )
-                    
-                    st.markdown("---")
-                    
-                    result_col1, result_col2 = st.columns(2)
-                    
-                    with result_col1:
-                        st.metric(
-                            "Matched Pattern",
-                            result['matched_pattern'],
-                            help="The incident pattern that best matches this incident"
-                        )
-                    
-                    with result_col2:
-                        confidence = result['confidence']
-                        if confidence == ConfidenceLevel.HIGH:
-                            confidence_color = "🟢"
-                        elif confidence == ConfidenceLevel.MEDIUM:
-                            confidence_color = "🟡"
-                        else:
-                            confidence_color = "🔴"
-                        
-                        st.metric(
-                            "Confidence Level",
-                            f"{confidence_color} {confidence}",
-                            help="How confident the match is"
-                        )
-                    
-                    st.markdown("---")
-                    
-                    # Show top matches
-                    if 'top_matches' in result and result['top_matches']:
-                        st.write("**📊 Top 5 Matching Patterns:**")
-                        
-                        for match in result['top_matches']:
-                            with st.container():
-                                col_rank, col_info = st.columns([1, 5])
-                                
-                                with col_rank:
-                                    st.markdown(f"### {match['rank']}")
-                                
-                                with col_info:
-                                    # Confidence emoji
-                                    if match['confidence'] == ConfidenceLevel.HIGH:
-                                        conf_emoji = "🟢"
-                                    elif match['confidence'] == ConfidenceLevel.MEDIUM:
-                                        conf_emoji = "🟡"
-                                    else:
-                                        conf_emoji = "🔴"
-                                    
-                                    # Display with incident ID if available
-                                    incident_id = match.get('incident_ID', 'N/A')
-                                    st.markdown(f"**ID: {incident_id} - {match['pattern_title']}** {conf_emoji}")
-                                    st.progress(match['similarity_score'])
-                                    st.caption(f"Similarity: {match['similarity_score']:.4f} | Confidence: {match['confidence']}")
-                                
-                                st.markdown("---")
+                # Match against train incidents in ChromaDB with optional reranking
+                result = match_incident(
+                    test_embedding, 
+                    test_context,
+                    chroma_collection, 
+                    train_data, 
+                    cross_encoder,
+                    top_k=top_k,
+                    use_reranking=use_reranking
+                )
                 
-                except Exception as e:
-                    st.error(f"❌ Classification failed: {str(e)}")
+                # Display result
+                rerank_label = " (with CrossEncoder reranking)" if result['reranking_used'] else ""
+                st.success(f"✅ Found {len(result['top_matches'])} matches!{rerank_label}")
+                
+                # Debug info
+                if result['reranking_used'] and result['top_matches']:
+                    ce_scores_list = [m.get('ce_score', 0) for m in result['top_matches'] if m.get('ce_score') is not None]
+                    if ce_scores_list:
+                        st.info(f"🔍 CE Score range: {min(ce_scores_list):.4f} - {max(ce_scores_list):.4f}")
+                
+                # Performance metrics
+                perf_col1, perf_col2, perf_col3 = st.columns(3)
+                with perf_col1:
+                    st.metric(
+                        "🔍 Retrieval",
+                        f"{result['timing']['retrieval_ms']:.1f}ms",
+                        help="Time for ChromaDB similarity search"
+                    )
+                with perf_col2:
+                    st.metric(
+                        "🔄 Rerank",
+                        f"{result['timing']['rerank_ms']:.1f}ms",
+                        help="Time for CrossEncoder reranking"
+                    )
+                with perf_col3:
+                    st.metric(
+                        "⏱️ Total",
+                        f"{result['timing']['total_ms']:.1f}ms",
+                        help="Total matching time"
+                    )
+                
+                st.markdown("---")
+                
+                # Show top matches
+                st.write(f"**📊 Top {top_k} Matching Train Incidents:**")
+                
+                for match in result['top_matches']:
+                    # Determine styling based on confidence
+                    if match['is_exact_match']:
+                        conf_emoji = "⭐"
+                        match_class = "exact-match"
+                    elif match['confidence'] == ConfidenceLevel.HIGH:
+                        conf_emoji = "🟢"
+                        match_class = "high-match"
+                    elif match['confidence'] == ConfidenceLevel.MEDIUM:
+                        conf_emoji = "🟡"
+                        match_class = "medium-match"
+                    else:
+                        conf_emoji = "🔴"
+                        match_class = "low-match"
+                    
+                    with st.container():
+                        col_rank, col_info = st.columns([1, 5])
+                        
+                        with col_rank:
+                            st.markdown(f"### {match['rank']}")
+                        
+                        with col_info:
+                            exact_label = " **EXACT MATCH**" if match['is_exact_match'] else ""
+                            st.markdown(f"**{match['number']}** {conf_emoji}{exact_label}")
+                            st.write(f"{match['short_description']}")
+                            # Show appropriate score based on reranking
+                            if match.get('ce_score') is not None:
+                                # CrossEncoder with sigmoid outputs [0, 1]
+                                st.progress(match['ce_score'])
+                                logit_info = f" (logit: {match.get('ce_logit', 0):.2f})" if 'ce_logit' in match else ""
+                                st.caption(f"CE Score: {match['ce_score']:.4f}{logit_info} | Cosine: {match['cosine_score']:.4f} | Problem ID: {match['problem_id']}")
+                            else:
+                                # Cosine is already in [0, 1]
+                                st.progress(match['cosine_score'])
+                                st.caption(f"Cosine: {match['cosine_score']:.4f} | Problem ID: {match['problem_id']} | {match['category']}/{match['subcategory']}")
+                        
+                        st.markdown("---")
+            
+            except Exception as e:
+                st.error(f"❌ Matching failed: {str(e)}")
+    elif not selected_test:
+        st.info("👈 Select a test incident from the dropdown to find matches")
 
 # Footer
 st.divider()
 st.markdown("""
 <div style="text-align: center; color: gray; font-size: 12px;">
-    <p>⚡ Incident Pattern Matcher v3.0 | Vector-Only</p>
-    <p>Last updated: 2026-03-05 | Results in milliseconds!</p>
+    <p>⚡ Incident Matcher v5.0 | ChromaDB + CrossEncoder Reranking</p>
+    <p>Two-stage matching: Fast retrieval → Accurate reranking</p>
+    <p>To update data: Replace train_with_embeddings.json and test_with_embeddings.json, then click Reload</p>
 </div>
 """, unsafe_allow_html=True)
