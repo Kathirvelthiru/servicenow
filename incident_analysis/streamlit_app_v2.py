@@ -825,20 +825,7 @@ elif st.session_state.mode == 'batch':
         
         st.caption(f"💡 Score statistics using {'CE' if use_ce_for_threshold else 'Cosine'} scores. Adjust threshold in sidebar based on these values.")
         
-        # Warning for large datasets
-        if is_large_dataset:
-            st.warning(f"""
-            ⚠️ **Large Dataset Detected** ({num_total_incidents} incidents)
-            
-            Full graph visualization is disabled for datasets with more than {LARGE_DATASET_THRESHOLD} incidents 
-            to prevent browser performance issues.
-            
-            **Recommended Actions:**
-            - Use the dropdown below to view individual bipartite graphs
-            - Download the results (CSV/JSON) for analysis in external tools
-            - Use tools like Gephi, NetworkX, or Neo4j for large graph visualization
-            """)
-        
+                
         # Graph Controls Section
         st.markdown("### 📈 Relationship Graph")
         
@@ -868,10 +855,6 @@ elif st.session_state.mode == 'batch':
             # Display current settings from sidebar
             st.metric("Threshold", f"{batch_threshold_min:.2f}")
             st.caption(f"Score Type: {'CE' if use_ce_for_threshold else 'Cosine'}")
-        
-        # Search box for text search
-        search_query = st.text_input("🔎 Search by text (filters table below)", "", 
-                                     help="Search incident descriptions")
         
         # Create and display graph with sidebar settings
         fig, num_incidents, num_problems, num_edges = create_graph_visualization(
@@ -966,15 +949,6 @@ elif st.session_state.mode == 'batch':
         
         # Apply filters to table
         table_results = batch_results
-        
-        # Filter by search query
-        if search_query:
-            table_results = [
-                r for r in table_results 
-                if search_query.lower() in r['test_incident'].lower() or 
-                   search_query.lower() in r['test_description'].lower() or
-                   search_query.lower() in r['matched_description'].lower()
-            ]
         
         # Filter by selected incident
         if selected_incident and selected_incident != "All Incidents":
