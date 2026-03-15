@@ -13,7 +13,11 @@ Usage:
 import streamlit as st
 import json
 import time
+import io
+import csv
+import pandas as pd
 from pathlib import Path
+from datetime import datetime
 
 try:
     import chromadb
@@ -21,10 +25,16 @@ except ImportError:
     raise ImportError("Please install: pip install chromadb")
 
 try:
-    from sentence_transformers import CrossEncoder
+    from sentence_transformers import CrossEncoder, SentenceTransformer
     import torch
 except ImportError:
     raise ImportError("Please install: pip install sentence-transformers torch")
+
+try:
+    import plotly.graph_objects as go
+    import networkx as nx
+except ImportError:
+    raise ImportError("Please install: pip install plotly networkx")
 
 # Configuration
 class Config:
@@ -40,6 +50,9 @@ class Config:
     # CrossEncoder thresholds (different scale than cosine similarity)
     CE_HIGH_THRESHOLD = 0.7
     CE_MEDIUM_THRESHOLD = 0.4
+    # Default score thresholds for filtering
+    DEFAULT_SS_THRESHOLD_MIN = 0.90
+    DEFAULT_SS_THRESHOLD_MAX = 0.99
 
 
 class ConfidenceLevel:
