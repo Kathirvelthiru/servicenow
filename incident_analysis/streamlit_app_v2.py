@@ -806,7 +806,7 @@ elif st.session_state.mode == 'batch':
         num_total_incidents = len(unique_incidents)
         
         # Large dataset threshold
-        LARGE_DATASET_THRESHOLD = 100
+        LARGE_DATASET_THRESHOLD = 50
         is_large_dataset = num_total_incidents > LARGE_DATASET_THRESHOLD
         
         st.success(f"✅ Processed {num_total_incidents} incidents with {len(batch_results)} total matches (Top-K per incident)")
