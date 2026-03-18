@@ -145,6 +145,7 @@ def init_chroma_db(_train_data):
             "problem_id": str(inc.get('problem_id', '')),
             "category": inc.get('category', ''),
             "subcategory": inc.get('subcategory', ''),
+            "cmdb_ci": inc.get('cmdb_ci', ''),
             "index": i
         }
         for i, inc in enumerate(_train_data)
@@ -174,20 +175,40 @@ def load_embedding_model():
 
 
 def match_incident(test_embedding: list, test_context: str, collection, train_data: list, 
-                   cross_encoder, top_k: int = 5, use_reranking: bool = True) -> dict:
+                   cross_encoder, top_k: int = 5, use_reranking: bool = True, 
+                   use_ci_filter: bool = False, test_cmdb_ci: str = None) -> dict:
     """
     Match test incident against train embeddings.
     Returns top_k matches with all scores (no filtering here - filtering done at display time).
+    
+    Args:
+        test_embedding: Embedding vector of test incident
+        test_context: Context text of test incident
+        collection: ChromaDB collection
+        train_data: List of train incidents
+        cross_encoder: CrossEncoder model
+        top_k: Number of top matches to return
+        use_reranking: Whether to use CrossEncoder reranking
+        use_ci_filter: If True, filter by configuration item first (optimized with ChromaDB where clause)
+        test_cmdb_ci: Configuration item of test incident (required if use_ci_filter=True)
     """
     start_time = time.time()
     
     retrieve_k = top_k * 3 if use_reranking else top_k
     
-    results = collection.query(
-        query_embeddings=[test_embedding],
-        n_results=retrieve_k,
-        include=["metadatas", "distances", "documents"]
-    )
+    # Build ChromaDB query with optional CI filter
+    query_params = {
+        "query_embeddings": [test_embedding],
+        "n_results": retrieve_k,
+        "include": ["metadatas", "distances", "documents"]
+    }
+    
+    # OPTIMIZATION: Apply CI filter at ChromaDB level using where clause
+    # This filters BEFORE retrieval, reducing processing time significantly
+    if use_ci_filter and test_cmdb_ci:
+        query_params["where"] = {"cmdb_ci": test_cmdb_ci}
+    
+    results = collection.query(**query_params)
     
     retrieval_time = time.time() - start_time
     
@@ -201,6 +222,7 @@ def match_incident(test_embedding: list, test_context: str, collection, train_da
         idx = metadata['index']
         train_inc = train_data[idx]
         
+        # No need for post-filtering anymore - ChromaDB already filtered by CI
         candidates.append({
             "number": metadata['number'],
             "short_description": metadata['short_description'],
@@ -209,7 +231,8 @@ def match_incident(test_embedding: list, test_context: str, collection, train_da
             "subcategory": metadata['subcategory'],
             "cosine_score": round(cosine_sim, 4),
             "context": document,
-            "full_data": train_inc
+            "full_data": train_inc,
+            "cmdb_ci": metadata.get('cmdb_ci', '')
         })
     
     rerank_time = 0
@@ -263,11 +286,14 @@ def match_incident(test_embedding: list, test_context: str, collection, train_da
 
 
 def process_batch_csv(uploaded_file, embedding_model, collection, train_data, cross_encoder,
-                      top_k, use_reranking):
+                      top_k, use_reranking, use_ci_filter=False):
     """
     Process uploaded CSV file and match all incidents.
     Collects top_k matches per incident with ALL scores (no threshold filtering).
     Threshold filtering is applied at display/graph time.
+    
+    Args:
+        use_ci_filter: If True, filter by configuration item before cosine/CE matching
     """
     
     # Read CSV
@@ -279,6 +305,11 @@ def process_batch_csv(uploaded_file, embedding_model, collection, train_data, cr
             st.error(f"Missing required column: {col}")
             return None
     
+    # Check if cmdb_ci column exists when CI filter is enabled
+    if use_ci_filter and 'cmdb_ci' not in df.columns:
+        st.warning("⚠️ CI filter enabled but 'cmdb_ci' column not found in CSV. Proceeding without CI filter.")
+        use_ci_filter = False
+    
     batch_results = []
     progress_bar = st.progress(0)
     status_text = st.empty()
@@ -286,16 +317,21 @@ def process_batch_csv(uploaded_file, embedding_model, collection, train_data, cr
     for idx, row in df.iterrows():
         status_text.text(f"Processing {idx + 1}/{len(df)}: {row['number']}")
         
-        # Create context
-        context = f"{row['short_description']} {row['description']}".strip()
+        # Create context from short_description + description + close_notes
+        close_notes = row.get('close_notes', '')
+        context = f"{row['short_description']} {row['description']} {close_notes}".strip()
         
         # Generate embedding
         embedding = embedding_model.encode(context).tolist()
         
+        # Get cmdb_ci if CI filter is enabled
+        test_cmdb_ci = row.get('cmdb_ci', '') if use_ci_filter else None
+        
         # Match - get top_k without threshold filtering
         result = match_incident(
             embedding, context, collection, train_data, cross_encoder,
-            top_k=top_k, use_reranking=use_reranking
+            top_k=top_k, use_reranking=use_reranking,
+            use_ci_filter=use_ci_filter, test_cmdb_ci=test_cmdb_ci
         )
         
         # Store ALL top_k results with scores
@@ -308,7 +344,8 @@ def process_batch_csv(uploaded_file, embedding_model, collection, train_data, cr
                 'problem_id': match['problem_id'],
                 'ce_score': match.get('ce_score'),
                 'cosine_score': match['cosine_score'],
-                'rank': match['rank']
+                'rank': match['rank'],
+                'cmdb_ci': match.get('cmdb_ci', '')
             })
         
         progress_bar.progress((idx + 1) / len(df))
@@ -634,6 +671,15 @@ with st.sidebar:
     use_reranking = st.checkbox("Use CrossEncoder Reranking", value=True)
     
     st.divider()
+    st.header("🔧 Configuration Item Filter")
+    
+    use_ci_filter = st.checkbox(
+        "Filter by Configuration Item (CI)",
+        value=False,
+        help="If checked, only matches train incidents with the same cmdb_ci as the test incident before applying cosine/CE scoring"
+    )
+    
+    st.divider()
     st.header("🎯 Batch Mode Settings")
     
     st.caption("Filter matches by score threshold (SS Threshold)")
@@ -708,9 +754,13 @@ if st.session_state.mode == 'single':
                     test_embedding = test_incident['embedding']
                     test_context = test_incident['context']
                     
+                    # Get cmdb_ci if CI filter is enabled
+                    test_cmdb_ci = test_incident.get('cmdb_ci', '') if use_ci_filter else None
+                    
                     result = match_incident(
                         test_embedding, test_context, chroma_collection, train_data, 
-                        cross_encoder, top_k=top_k, use_reranking=use_reranking
+                        cross_encoder, top_k=top_k, use_reranking=use_reranking,
+                        use_ci_filter=use_ci_filter, test_cmdb_ci=test_cmdb_ci
                     )
                     
                     st.success(f"✅ Found {len(result['top_matches'])} matches")
@@ -783,7 +833,7 @@ elif st.session_state.mode == 'batch':
                 with st.spinner("Processing batch..."):
                     batch_results = process_batch_csv(
                         uploaded_file, embedding_model, chroma_collection, train_data,
-                        cross_encoder, top_k, use_reranking
+                        cross_encoder, top_k, use_reranking, use_ci_filter
                     )
                     
                     if batch_results:

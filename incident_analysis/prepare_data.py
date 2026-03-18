@@ -130,7 +130,7 @@ def convert_rows_to_records(rows_data: list[dict]) -> list[dict]:
 class IncidentData:
     """Incident data object with context and other attributes"""
     number: str
-    context: str  # Combined short_description + description
+    context: str  # Combined short_description + description + close_notes
     short_description: str
     description: str
     priority: str
@@ -145,6 +145,7 @@ class IncidentData:
     caller_id: str
     sys_created_on: str
     resolved_at: str
+    close_notes: str
     embedding: Optional[List[float]] = None
 
 
@@ -152,7 +153,10 @@ def create_incident_object(record: dict) -> IncidentData:
     """Create IncidentData object from record"""
     short_desc = record.get('short_description', '')
     desc = record.get('description', '')
-    context = f"{short_desc} {desc}".strip()
+    close_notes = record.get('close_notes', '')
+    
+    # Create context from short_description + description + close_notes
+    context = f"{short_desc} {desc} {close_notes}".strip()
     
     return IncidentData(
         number=record.get('number', ''),
@@ -170,7 +174,8 @@ def create_incident_object(record: dict) -> IncidentData:
         u_issue=record.get('u_issue', ''),
         caller_id=record.get('caller_id', ''),
         sys_created_on=record.get('sys_created_on', ''),
-        resolved_at=record.get('resolved_at', '')
+        resolved_at=record.get('resolved_at', ''),
+        close_notes=close_notes
     )
 
 
