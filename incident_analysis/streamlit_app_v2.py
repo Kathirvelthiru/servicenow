@@ -802,7 +802,12 @@ elif st.session_state.mode == 'batch':
         batch_results = st.session_state.batch_results
         
         # Get unique test incidents for dropdown
-        unique_incidents = sorted(set(r['test_incident'] for r in batch_results))
+        # Filter to only show incidents that have graph data after threshold filtering
+        filtered_for_graph = filter_results_by_threshold(batch_results, batch_threshold_min, use_ce_for_threshold, batch_threshold_max)
+        filtered_for_graph = apply_topk_per_incident(filtered_for_graph, top_k, use_ce_for_threshold)
+        
+        unique_incidents_with_graph = sorted(set(r['test_incident'] for r in filtered_for_graph))
+        unique_incidents = unique_incidents_with_graph  # Only show incidents with graph data
         num_total_incidents = len(unique_incidents)
         
         # Large dataset threshold

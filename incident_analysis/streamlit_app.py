@@ -368,8 +368,22 @@ col1, col2 = st.columns([1, 1])
 with col1:
     st.subheader("📝 Select Test Incident")
     
-    # Create dropdown options from test incidents
-    test_options = {f"{inc['number']}: {inc['short_description'][:50]}...": i for i, inc in enumerate(test_data)}
+    # Filter test incidents to only show those with problem_id that exists in train data
+    train_problem_ids = set(inc.get('problem_id') for inc in train_data if inc.get('problem_id'))
+    
+    filtered_test_data = [
+        (i, inc) for i, inc in enumerate(test_data) 
+        if inc.get('problem_id') and inc.get('problem_id') in train_problem_ids
+    ]
+    
+    # Create dropdown options from filtered test incidents
+    test_options = {
+        f"{inc['number']}: {inc['short_description'][:50]}...": idx 
+        for idx, inc in filtered_test_data
+    }
+    
+    # Show filter info
+    st.caption(f"Showing {len(filtered_test_data)} of {len(test_data)} test incidents (only incidents with matching problem_id)")
     
     selected_test = st.selectbox(
         "Test Incident ID",
