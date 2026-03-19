@@ -208,7 +208,19 @@ def match_incident(test_embedding: list, test_context: str, collection, train_da
     if use_ci_filter and test_cmdb_ci:
         query_params["where"] = {"cmdb_ci": test_cmdb_ci}
     
-    results = collection.query(**query_params)
+    try:
+        results = collection.query(**query_params)
+    except Exception as e:
+        # Fallback: If where clause fails (old ChromaDB or missing metadata), query without filter
+        if use_ci_filter and "where" in query_params:
+            del query_params["where"]
+            results = collection.query(**query_params)
+            # Apply post-filtering as fallback
+            use_post_filter = True
+        else:
+            raise e
+    else:
+        use_post_filter = False
     
     retrieval_time = time.time() - start_time
     
@@ -222,7 +234,12 @@ def match_incident(test_embedding: list, test_context: str, collection, train_da
         idx = metadata['index']
         train_inc = train_data[idx]
         
-        # No need for post-filtering anymore - ChromaDB already filtered by CI
+        # Apply post-filtering if fallback mode (old ChromaDB without cmdb_ci in metadata)
+        if use_post_filter and use_ci_filter and test_cmdb_ci:
+            train_cmdb_ci = train_inc.get('cmdb_ci', '')
+            if train_cmdb_ci != test_cmdb_ci:
+                continue  # Skip this candidate if CI doesn't match
+        
         candidates.append({
             "number": metadata['number'],
             "short_description": metadata['short_description'],
@@ -232,7 +249,7 @@ def match_incident(test_embedding: list, test_context: str, collection, train_da
             "cosine_score": round(cosine_sim, 4),
             "context": document,
             "full_data": train_inc,
-            "cmdb_ci": metadata.get('cmdb_ci', '')
+            "cmdb_ci": metadata.get('cmdb_ci', train_inc.get('cmdb_ci', ''))
         })
     
     rerank_time = 0

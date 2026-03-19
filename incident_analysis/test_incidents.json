@@ -1,7 +1,7 @@
 [
   {
     "number": "INC10100",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -16,11 +16,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46085.40555555555",
     "resolved_at": "46085.44097222222",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10101",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -35,11 +36,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46088.20138888889",
     "resolved_at": "46088.40694444445",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10102",
-    "context": "Email delay Auto generated incident for monitoring/testing dataset",
+    "context": "Email delay Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Email delay",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -54,11 +56,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46092.19375",
     "resolved_at": "46092.30763888889",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10103",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -73,11 +76,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46087.33472222222",
     "resolved_at": "46087.535416666666",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10104",
-    "context": "Login issue Auto generated incident for monitoring/testing dataset",
+    "context": "Login issue Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Login issue",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -92,11 +96,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46083.45138888889",
     "resolved_at": "46083.72986111111",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10105",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -111,11 +116,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46082.63611111111",
     "resolved_at": "46082.86736111111",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10106",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -130,11 +136,12 @@
     "caller_id": "User",
     "sys_created_on": "46088.97430555556",
     "resolved_at": "46089.103472222225",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10107",
-    "context": "Email delay Auto generated incident for monitoring/testing dataset",
+    "context": "Email delay Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Email delay",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -149,11 +156,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46090.075694444444",
     "resolved_at": "46090.34861111111",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10108",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -168,11 +176,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46084.81180555555",
     "resolved_at": "46084.978472222225",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10109",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -187,11 +196,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46091.399305555555",
     "resolved_at": "46091.63333333333",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10110",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -206,11 +216,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46090.53055555555",
     "resolved_at": "46090.665972222225",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10111",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -225,11 +236,12 @@
     "caller_id": "User",
     "sys_created_on": "46083.8",
     "resolved_at": "46083.86875",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10112",
-    "context": "Login issue Auto generated incident for monitoring/testing dataset",
+    "context": "Login issue Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Login issue",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -244,11 +256,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46083.73819444444",
     "resolved_at": "46083.97152777778",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10113",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -263,11 +276,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46091.14236111111",
     "resolved_at": "46091.16527777778",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10114",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -282,11 +296,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46082.72986111111",
     "resolved_at": "46083.04791666667",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10115",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -301,11 +316,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46090.64097222222",
     "resolved_at": "46090.95486111111",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10116",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -320,11 +336,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46089.97986111111",
     "resolved_at": "46090.15277777778",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10117",
-    "context": "Email delay Auto generated incident for monitoring/testing dataset",
+    "context": "Email delay Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Email delay",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -339,11 +356,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46084.4",
     "resolved_at": "46084.555555555555",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10118",
-    "context": "UI slow loading Auto generated incident for monitoring/testing dataset",
+    "context": "UI slow loading Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "UI slow loading",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -358,11 +376,12 @@
     "caller_id": "User",
     "sys_created_on": "46083.88958333333",
     "resolved_at": "46084.1",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10119",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -377,11 +396,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46089.177083333336",
     "resolved_at": "46089.28472222222",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10120",
-    "context": "Login issue Auto generated incident for monitoring/testing dataset",
+    "context": "Login issue Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Login issue",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -396,11 +416,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46083.80416666667",
     "resolved_at": "46083.85833333333",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10121",
-    "context": "Login issue Auto generated incident for monitoring/testing dataset",
+    "context": "Login issue Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Login issue",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -415,11 +436,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46082.90416666667",
     "resolved_at": "46083.01944444444",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10122",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -434,11 +456,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46085.291666666664",
     "resolved_at": "46085.31875",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10123",
-    "context": "UI slow loading Auto generated incident for monitoring/testing dataset",
+    "context": "UI slow loading Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "UI slow loading",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -453,11 +476,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46083.618055555555",
     "resolved_at": "46083.76527777778",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10124",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -472,11 +496,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46084.78611111111",
     "resolved_at": "46085.05694444444",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10125",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -491,11 +516,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46087.58125",
     "resolved_at": "46087.711805555555",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10126",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -510,11 +536,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46085.01875",
     "resolved_at": "46085.08888888889",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10127",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -529,11 +556,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46085.097916666666",
     "resolved_at": "46085.32986111111",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10128",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -548,11 +576,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46091.39027777778",
     "resolved_at": "46091.58125",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10129",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -567,11 +596,12 @@
     "caller_id": "User",
     "sys_created_on": "46095.245833333334",
     "resolved_at": "46095.26944444444",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10130",
-    "context": "UI slow loading Auto generated incident for monitoring/testing dataset",
+    "context": "UI slow loading Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "UI slow loading",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -586,11 +616,12 @@
     "caller_id": "User",
     "sys_created_on": "46089.77916666667",
     "resolved_at": "46090.04513888889",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10131",
-    "context": "Email delay Auto generated incident for monitoring/testing dataset",
+    "context": "Email delay Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Email delay",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -605,11 +636,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46085.493055555555",
     "resolved_at": "46085.66805555556",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10132",
-    "context": "UI slow loading Auto generated incident for monitoring/testing dataset",
+    "context": "UI slow loading Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "UI slow loading",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -624,11 +656,12 @@
     "caller_id": "User",
     "sys_created_on": "46083.99930555555",
     "resolved_at": "46084.020833333336",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10133",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -643,11 +676,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46092.504166666666",
     "resolved_at": "46092.76666666667",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10134",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -662,11 +696,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46082.864583333336",
     "resolved_at": "46082.91180555556",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10135",
-    "context": "Login issue Auto generated incident for monitoring/testing dataset",
+    "context": "Login issue Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Login issue",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -681,11 +716,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46087.22222222222",
     "resolved_at": "46087.31180555555",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10136",
-    "context": "UI slow loading Auto generated incident for monitoring/testing dataset",
+    "context": "UI slow loading Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "UI slow loading",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -700,11 +736,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46092.675",
     "resolved_at": "46093.00763888889",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10137",
-    "context": "Login issue Auto generated incident for monitoring/testing dataset",
+    "context": "Login issue Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Login issue",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -719,11 +756,12 @@
     "caller_id": "User",
     "sys_created_on": "46086.98888888889",
     "resolved_at": "46087.21388888889",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10138",
-    "context": "Login issue Auto generated incident for monitoring/testing dataset",
+    "context": "Login issue Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Login issue",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -738,11 +776,12 @@
     "caller_id": "User",
     "sys_created_on": "46084.87847222222",
     "resolved_at": "46084.972916666666",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10139",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -757,11 +796,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46087.32638888889",
     "resolved_at": "46087.6375",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10140",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -776,11 +816,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46084.89375",
     "resolved_at": "46085.14861111111",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10141",
-    "context": "UI slow loading Auto generated incident for monitoring/testing dataset",
+    "context": "UI slow loading Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "UI slow loading",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -795,11 +836,12 @@
     "caller_id": "User",
     "sys_created_on": "46092.41805555556",
     "resolved_at": "46092.57916666667",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10142",
-    "context": "Email delay Auto generated incident for monitoring/testing dataset",
+    "context": "Email delay Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Email delay",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -814,11 +856,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46093.830555555556",
     "resolved_at": "46094.03333333333",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10143",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -833,11 +876,12 @@
     "caller_id": "User",
     "sys_created_on": "46085.01875",
     "resolved_at": "46085.052777777775",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10144",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -852,11 +896,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46087.416666666664",
     "resolved_at": "46087.70625",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10145",
-    "context": "Email delay Auto generated incident for monitoring/testing dataset",
+    "context": "Email delay Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Email delay",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -871,11 +916,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46093.88888888889",
     "resolved_at": "46094.163194444445",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10146",
-    "context": "Email delay Auto generated incident for monitoring/testing dataset",
+    "context": "Email delay Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Email delay",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -890,11 +936,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46091.23055555556",
     "resolved_at": "46091.3",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10147",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -909,11 +956,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46090.01180555556",
     "resolved_at": "46090.07986111111",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10148",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -928,11 +976,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46090.69861111111",
     "resolved_at": "46090.95625",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10149",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -947,11 +996,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46094.26597222222",
     "resolved_at": "46094.43263888889",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10150",
-    "context": "Email delay Auto generated incident for monitoring/testing dataset",
+    "context": "Email delay Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Email delay",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -966,11 +1016,12 @@
     "caller_id": "User",
     "sys_created_on": "46095.18263888889",
     "resolved_at": "46095.31597222222",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10151",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -985,11 +1036,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46090.075",
     "resolved_at": "46090.18472222222",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10152",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -1004,11 +1056,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46082.75069444445",
     "resolved_at": "46082.79861111111",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10153",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1023,11 +1076,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46088.17291666667",
     "resolved_at": "46088.49375",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10154",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1042,11 +1096,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46085.489583333336",
     "resolved_at": "46085.78472222222",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10155",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1061,11 +1116,12 @@
     "caller_id": "User",
     "sys_created_on": "46087.82152777778",
     "resolved_at": "46087.86111111111",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10156",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1080,11 +1136,12 @@
     "caller_id": "User",
     "sys_created_on": "46094.23541666667",
     "resolved_at": "46094.580555555556",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10157",
-    "context": "UI slow loading Auto generated incident for monitoring/testing dataset",
+    "context": "UI slow loading Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "UI slow loading",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -1099,11 +1156,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46087.76597222222",
     "resolved_at": "46087.83611111111",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10158",
-    "context": "Login issue Auto generated incident for monitoring/testing dataset",
+    "context": "Login issue Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Login issue",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1118,11 +1176,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46091.967361111114",
     "resolved_at": "46092.30694444444",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10159",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -1137,11 +1196,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46092.447222222225",
     "resolved_at": "46092.65833333333",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10160",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -1156,11 +1216,12 @@
     "caller_id": "User",
     "sys_created_on": "46089.404861111114",
     "resolved_at": "46089.71388888889",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10161",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1175,11 +1236,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46089.12986111111",
     "resolved_at": "46089.38680555556",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10162",
-    "context": "Email delay Auto generated incident for monitoring/testing dataset",
+    "context": "Email delay Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Email delay",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1194,11 +1256,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46085.13125",
     "resolved_at": "46085.37152777778",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10163",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1213,11 +1276,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46089.86875",
     "resolved_at": "46090.12986111111",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10164",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1232,11 +1296,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46086.424305555556",
     "resolved_at": "46086.55625",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10165",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -1251,11 +1316,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46092.07361111111",
     "resolved_at": "46092.17986111111",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10166",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -1270,11 +1336,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46090.03611111111",
     "resolved_at": "46090.126388888886",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10167",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1289,11 +1356,12 @@
     "caller_id": "User",
     "sys_created_on": "46084.77916666667",
     "resolved_at": "46085.044444444444",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10168",
-    "context": "Email delay Auto generated incident for monitoring/testing dataset",
+    "context": "Email delay Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Email delay",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1308,11 +1376,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46093.0875",
     "resolved_at": "46093.275",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10169",
-    "context": "Login issue Auto generated incident for monitoring/testing dataset",
+    "context": "Login issue Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Login issue",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1327,11 +1396,12 @@
     "caller_id": "User",
     "sys_created_on": "46084.93819444445",
     "resolved_at": "46085.069444444445",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10170",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1346,11 +1416,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46086.09166666667",
     "resolved_at": "46086.18263888889",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10171",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -1365,11 +1436,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46082.73888888889",
     "resolved_at": "46083.058333333334",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10172",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1384,11 +1456,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46082.34861111111",
     "resolved_at": "46082.634722222225",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10173",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1403,11 +1476,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46085.73611111111",
     "resolved_at": "46085.86388888889",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10174",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1422,11 +1496,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46089.87708333333",
     "resolved_at": "46090.18263888889",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10175",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -1441,11 +1516,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46089.85555555556",
     "resolved_at": "46090.14444444444",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10176",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1460,11 +1536,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46090.433333333334",
     "resolved_at": "46090.69375",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10177",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -1479,11 +1556,12 @@
     "caller_id": "User",
     "sys_created_on": "46090.010416666664",
     "resolved_at": "46090.09930555556",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10178",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1498,11 +1576,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46089.48541666667",
     "resolved_at": "46089.61041666667",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10179",
-    "context": "Email delay Auto generated incident for monitoring/testing dataset",
+    "context": "Email delay Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Email delay",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1517,11 +1596,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46095.17361111111",
     "resolved_at": "46095.44027777778",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10180",
-    "context": "UI slow loading Auto generated incident for monitoring/testing dataset",
+    "context": "UI slow loading Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "UI slow loading",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1536,11 +1616,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46089.677777777775",
     "resolved_at": "46089.760416666664",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10181",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1555,11 +1636,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46084.60902777778",
     "resolved_at": "46084.81527777778",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10182",
-    "context": "Email delay Auto generated incident for monitoring/testing dataset",
+    "context": "Email delay Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Email delay",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1574,11 +1656,12 @@
     "caller_id": "User",
     "sys_created_on": "46087.43402777778",
     "resolved_at": "46087.66805555556",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10183",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1593,11 +1676,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46094.73402777778",
     "resolved_at": "46094.88680555556",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10184",
-    "context": "Login issue Auto generated incident for monitoring/testing dataset",
+    "context": "Login issue Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Login issue",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1612,11 +1696,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46089.03888888889",
     "resolved_at": "46089.14027777778",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10185",
-    "context": "Login issue Auto generated incident for monitoring/testing dataset",
+    "context": "Login issue Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Login issue",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1631,11 +1716,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46093.04375",
     "resolved_at": "46093.08611111111",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10186",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1650,11 +1736,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46092.85138888889",
     "resolved_at": "46093.14444444444",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10187",
-    "context": "UI slow loading Auto generated incident for monitoring/testing dataset",
+    "context": "UI slow loading Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "UI slow loading",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1669,11 +1756,12 @@
     "caller_id": "PagerDuty",
     "sys_created_on": "46094.02569444444",
     "resolved_at": "46094.1125",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10188",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -1688,11 +1776,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46092.748611111114",
     "resolved_at": "46093.07638888889",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10189",
-    "context": "Login issue Auto generated incident for monitoring/testing dataset",
+    "context": "Login issue Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Login issue",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1707,11 +1796,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46084.94027777778",
     "resolved_at": "46085.021527777775",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10190",
-    "context": "Login issue Auto generated incident for monitoring/testing dataset",
+    "context": "Login issue Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Login issue",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -1726,11 +1816,12 @@
     "caller_id": "User",
     "sys_created_on": "46088.839583333334",
     "resolved_at": "46088.936111111114",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10191",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -1745,11 +1836,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46086.46041666667",
     "resolved_at": "46086.70972222222",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10192",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -1764,11 +1856,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46087.31041666667",
     "resolved_at": "46087.48819444444",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10193",
-    "context": "Database timeout Auto generated incident for monitoring/testing dataset",
+    "context": "Database timeout Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Database timeout",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -1783,11 +1876,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46083.779861111114",
     "resolved_at": "46084.08888888889",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10194",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "3 - Moderate",
@@ -1802,11 +1896,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46085.91180555556",
     "resolved_at": "46086.16180555556",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10195",
-    "context": "ETL job failure Auto generated incident for monitoring/testing dataset",
+    "context": "ETL job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "ETL job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1821,11 +1916,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46092.895833333336",
     "resolved_at": "46092.94652777778",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10196",
-    "context": "UI slow loading Auto generated incident for monitoring/testing dataset",
+    "context": "UI slow loading Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "UI slow loading",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "2 - High",
@@ -1840,11 +1936,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46096.11319444444",
     "resolved_at": "46096.24375",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10197",
-    "context": "API latency alert Auto generated incident for monitoring/testing dataset",
+    "context": "API latency alert Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "API latency alert",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -1859,11 +1956,12 @@
     "caller_id": "Guest",
     "sys_created_on": "46085.373611111114",
     "resolved_at": "46085.697222222225",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10198",
-    "context": "Batch job failure Auto generated incident for monitoring/testing dataset",
+    "context": "Batch job failure Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Batch job failure",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "1 - Critical",
@@ -1878,11 +1976,12 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46093.17847222222",
     "resolved_at": "46093.52291666667",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   },
   {
     "number": "INC10199",
-    "context": "Email delay Auto generated incident for monitoring/testing dataset",
+    "context": "Email delay Auto generated incident for monitoring/testing dataset Issue resolved after investigation",
     "short_description": "Email delay",
     "description": "Auto generated incident for monitoring/testing dataset",
     "priority": "4 - Low",
@@ -1897,6 +1996,7 @@
     "caller_id": "Monitoring System",
     "sys_created_on": "46094.78680555556",
     "resolved_at": "46095.07430555556",
+    "close_notes": "Issue resolved after investigation",
     "embedding": null
   }
 ]
