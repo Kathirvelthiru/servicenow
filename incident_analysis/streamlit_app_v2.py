@@ -1038,6 +1038,96 @@ elif st.session_state.mode == 'batch':
             df = pd.DataFrame(table_results)
             st.dataframe(df, use_container_width=True)
             st.caption(f"Showing {len(table_results)} matches (threshold ≥ {batch_threshold_min:.2f}, ≤ {top_k} per incident)")
+            
+            # Detailed Inspection Section
+            st.divider()
+            st.markdown("### 🔍 Detailed Inspection")
+            st.caption("Select a match to view detailed information about test incident, matched incident, and problem details")
+            
+            # Create selection options
+            inspection_options = [
+                f"{r['test_incident']} → {r['matched_incident']} (Score: {get_score(r, use_ce_for_threshold):.3f})"
+                for r in table_results
+            ]
+            
+            selected_match_idx = st.selectbox(
+                "Select a match to inspect:",
+                range(len(inspection_options)),
+                format_func=lambda i: inspection_options[i]
+            )
+            
+            if selected_match_idx is not None:
+                selected_result = table_results[selected_match_idx]
+                
+                # Get test incident details from uploaded CSV
+                test_inc_number = selected_result['test_incident']
+                
+                # Get matched train incident details
+                matched_train_inc = None
+                for train_inc in train_data:
+                    if train_inc.get('number') == selected_result['matched_incident']:
+                        matched_train_inc = train_inc
+                        break
+                
+                # Display in three columns
+                col1, col2, col3 = st.columns(3)
+                
+                with col1:
+                    st.markdown("#### 📝 Test Incident")
+                    st.markdown(f"**Number:** {test_inc_number}")
+                    st.markdown(f"**Description:** {selected_result.get('test_description', 'N/A')}")
+                    st.markdown(f"**Configuration Item:** {selected_result.get('cmdb_ci', 'Missing')}")
+                
+                with col2:
+                    st.markdown("#### ✅ Matched Incident")
+                    st.markdown(f"**Number:** {selected_result['matched_incident']}")
+                    st.markdown(f"**Description:** {selected_result.get('matched_description', 'N/A')}")
+                    if matched_train_inc:
+                        st.markdown(f"**Configuration Item:** {matched_train_inc.get('cmdb_ci', 'Missing')}")
+                        st.markdown(f"**Category:** {matched_train_inc.get('category', 'Missing')}")
+                        st.markdown(f"**Subcategory:** {matched_train_inc.get('subcategory', 'Missing')}")
+                        st.markdown(f"**Close Notes:** {matched_train_inc.get('close_notes', 'Missing')}")
+                    else:
+                        st.warning("Matched incident details not found")
+                
+                with col3:
+                    st.markdown("#### 🔗 Problem Details")
+                    # Get problem_id from result, fallback to matched train incident
+                    problem_id = selected_result.get('problem_id', '')
+                    if not problem_id or problem_id in ('', 'None', 'nan', 'null'):
+                        # Try getting from matched train incident directly
+                        if matched_train_inc:
+                            problem_id = matched_train_inc.get('problem_id', '')
+                    
+                    # Check if valid problem_id exists
+                    has_problem = problem_id and problem_id not in ('', 'None', 'nan', 'null', 'Missing')
+                    
+                    st.markdown(f"**Problem ID:** {problem_id if has_problem else 'Missing'}")
+                    
+                    if has_problem:
+                        # Get problem short_description from matched incident (since problem is linked)
+                        if matched_train_inc:
+                            # Use short_description as problem context (problem linked to this incident)
+                            problem_short_desc = matched_train_inc.get('short_description', 'Missing')
+                            problem_desc = matched_train_inc.get('description', 'Missing')
+                            st.markdown(f"**Problem Short Desc:** {problem_short_desc}")
+                            st.markdown(f"**Problem Description:** {problem_desc}")
+                        else:
+                            st.markdown("**Problem Description:** Missing")
+                    else:
+                        st.info("No problem ID associated with this match")
+                
+                # Show scores
+                st.divider()
+                st.markdown("#### 📊 Match Scores")
+                score_col1, score_col2, score_col3 = st.columns(3)
+                with score_col1:
+                    st.metric("Cosine Score", f"{selected_result['cosine_score']:.4f}")
+                with score_col2:
+                    ce_score = selected_result.get('ce_score')
+                    st.metric("CE Score", f"{ce_score:.4f}" if ce_score is not None else "N/A")
+                with score_col3:
+                    st.metric("Rank", selected_result.get('rank', 'N/A'))
         else:
             st.info("No results match the current filters")
 
