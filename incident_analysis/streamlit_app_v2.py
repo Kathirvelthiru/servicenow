@@ -116,6 +116,29 @@ def load_data():
 
 
 @st.cache_resource
+def load_problem_dataset():
+    """Load problem dataset and create lookup dictionary by problem_id"""
+    base_path = Path(__file__).parent.parent  # Go up to servicenow folder
+    problem_file = base_path / "problem_dataset.xlsx"
+    
+    if not problem_file.exists():
+        return {}
+    
+    try:
+        # Load only required columns
+        df = pd.read_excel(
+            problem_file, 
+            usecols=["problem_id", "problem_short_description", "problem_description", "cmdb_ci"]
+        )
+        # Create lookup dictionary indexed by problem_id
+        problem_lookup = df.set_index("problem_id").to_dict("index")
+        return problem_lookup
+    except Exception as e:
+        st.warning(f"Could not load problem_dataset.xlsx: {e}")
+        return {}
+
+
+@st.cache_resource
 def init_chroma_db(_train_data):
     """Initialize ChromaDB with train embeddings"""
     base_path = Path(__file__).parent
@@ -176,7 +199,8 @@ def load_embedding_model():
 
 def match_incident(test_embedding: list, test_context: str, collection, train_data: list, 
                    cross_encoder, top_k: int = 5, use_reranking: bool = True, 
-                   use_ci_filter: bool = False, test_cmdb_ci: str = None) -> dict:
+                   use_ci_filter: bool = False, test_cmdb_ci: str = None,
+                   use_problem_ci_filter: bool = False, problem_lookup: dict = None) -> dict:
     """
     Match test incident against train embeddings.
     Returns top_k matches with all scores (no filtering here - filtering done at display time).
@@ -191,6 +215,8 @@ def match_incident(test_embedding: list, test_context: str, collection, train_da
         use_reranking: Whether to use CrossEncoder reranking
         use_ci_filter: If True, filter by configuration item first (optimized with ChromaDB where clause)
         test_cmdb_ci: Configuration item of test incident (required if use_ci_filter=True)
+        use_problem_ci_filter: If True, filter by problem CI matching test CI
+        problem_lookup: Dictionary of problem details indexed by problem_id
     """
     start_time = time.time()
     
@@ -239,6 +265,15 @@ def match_incident(test_embedding: list, test_context: str, collection, train_da
             train_cmdb_ci = train_inc.get('cmdb_ci', '')
             if train_cmdb_ci != test_cmdb_ci:
                 continue  # Skip this candidate if CI doesn't match
+        
+        # Apply Problem CI filter if enabled
+        if use_problem_ci_filter and test_cmdb_ci and problem_lookup:
+            problem_id = metadata.get('problem_id', '')
+            if problem_id and problem_id not in ('', 'None', 'nan', 'null'):
+                problem_info = problem_lookup.get(problem_id, {})
+                problem_ci = problem_info.get('cmdb_ci', '')
+                if problem_ci and problem_ci != test_cmdb_ci:
+                    continue  # Skip if problem CI doesn't match test CI
         
         candidates.append({
             "number": metadata['number'],
@@ -303,7 +338,8 @@ def match_incident(test_embedding: list, test_context: str, collection, train_da
 
 
 def process_batch_csv(uploaded_file, embedding_model, collection, train_data, cross_encoder,
-                      top_k, use_reranking, use_ci_filter=False):
+                      top_k, use_reranking, use_ci_filter=False, 
+                      use_problem_ci_filter=False, problem_lookup=None):
     """
     Process uploaded CSV file and match all incidents.
     Collects top_k matches per incident with ALL scores (no threshold filtering).
@@ -311,6 +347,8 @@ def process_batch_csv(uploaded_file, embedding_model, collection, train_data, cr
     
     Args:
         use_ci_filter: If True, filter by configuration item before cosine/CE matching
+        use_problem_ci_filter: If True, filter by problem CI matching test CI
+        problem_lookup: Dictionary of problem details indexed by problem_id
     """
     
     # Read CSV
@@ -342,13 +380,14 @@ def process_batch_csv(uploaded_file, embedding_model, collection, train_data, cr
         embedding = embedding_model.encode(context).tolist()
         
         # Get cmdb_ci if CI filter is enabled
-        test_cmdb_ci = row.get('cmdb_ci', '') if use_ci_filter else None
+        test_cmdb_ci = row.get('cmdb_ci', '') if (use_ci_filter or use_problem_ci_filter) else None
         
         # Match - get top_k without threshold filtering
         result = match_incident(
             embedding, context, collection, train_data, cross_encoder,
             top_k=top_k, use_reranking=use_reranking,
-            use_ci_filter=use_ci_filter, test_cmdb_ci=test_cmdb_ci
+            use_ci_filter=use_ci_filter, test_cmdb_ci=test_cmdb_ci,
+            use_problem_ci_filter=use_problem_ci_filter, problem_lookup=problem_lookup
         )
         
         # Store ALL top_k results with scores
@@ -642,6 +681,7 @@ def export_results(batch_results, format='csv'):
 try:
     with st.spinner("⚡ Loading data, ChromaDB, and models..."):
         train_data, test_data = load_data()
+        problem_lookup = load_problem_dataset()
         chroma_client, chroma_collection = init_chroma_db(train_data)
         cross_encoder = load_cross_encoder()
         embedding_model = load_embedding_model()
@@ -665,14 +705,14 @@ if not data_ready:
 # Mode selection buttons
 col1, col2, col3 = st.columns([1, 1, 3])
 with col1:
-    if st.button("📝 Single Mode", use_container_width=True, 
+    if st.button("📝 Single Mode", width='stretch', 
                  type="primary" if st.session_state.mode == 'single' else "secondary"):
         st.session_state.mode = 'single'
         st.session_state.show_results = False
         st.rerun()
 
 with col2:
-    if st.button("📊 Batch Mode", use_container_width=True,
+    if st.button("📊 Batch Mode", width='stretch',
                  type="primary" if st.session_state.mode == 'batch' else "secondary"):
         st.session_state.mode = 'batch'
         st.session_state.show_results = False
@@ -694,6 +734,12 @@ with st.sidebar:
         "Filter by Configuration Item (CI)",
         value=False,
         help="If checked, only matches train incidents with the same cmdb_ci as the test incident before applying cosine/CE scoring"
+    )
+    
+    use_problem_ci_filter = st.checkbox(
+        "Filter by Problem CI Match",
+        value=False,
+        help="If checked, additionally filters matches where the problem's cmdb_ci (from problem_dataset) matches the test incident's cmdb_ci"
     )
     
     st.divider()
@@ -758,7 +804,7 @@ if st.session_state.mode == 'single':
             st.write(f"**Short Description:** {test_incident['short_description']}")
             st.write(f"**Description:** {test_incident['description']}")
             
-            match_btn = st.button("⚡ Find Matching Incidents", type="primary", use_container_width=True)
+            match_btn = st.button("⚡ Find Matching Incidents", type="primary", width='stretch')
         else:
             match_btn = False
     
@@ -772,12 +818,13 @@ if st.session_state.mode == 'single':
                     test_context = test_incident['context']
                     
                     # Get cmdb_ci if CI filter is enabled
-                    test_cmdb_ci = test_incident.get('cmdb_ci', '') if use_ci_filter else None
+                    test_cmdb_ci = test_incident.get('cmdb_ci', '') if (use_ci_filter or use_problem_ci_filter) else None
                     
                     result = match_incident(
                         test_embedding, test_context, chroma_collection, train_data, 
                         cross_encoder, top_k=top_k, use_reranking=use_reranking,
-                        use_ci_filter=use_ci_filter, test_cmdb_ci=test_cmdb_ci
+                        use_ci_filter=use_ci_filter, test_cmdb_ci=test_cmdb_ci,
+                        use_problem_ci_filter=use_problem_ci_filter, problem_lookup=problem_lookup
                     )
                     
                     st.success(f"✅ Found {len(result['top_matches'])} matches")
@@ -846,14 +893,19 @@ elif st.session_state.mode == 'batch':
             # Reset file pointer
             uploaded_file.seek(0)
             
-            if st.button("🚀 Start Batch Processing", type="primary", use_container_width=True):
+            if st.button("🚀 Start Batch Processing", type="primary", width='stretch'):
                 with st.spinner("Processing batch..."):
                     batch_results = process_batch_csv(
                         uploaded_file, embedding_model, chroma_collection, train_data,
-                        cross_encoder, top_k, use_reranking, use_ci_filter
+                        cross_encoder, top_k, use_reranking, use_ci_filter,
+                        use_problem_ci_filter, problem_lookup
                     )
                     
-                    if batch_results:
+                    if batch_results is None:
+                        st.error("❌ Batch processing failed. Please check your CSV file format.")
+                    elif len(batch_results) == 0:
+                        st.warning("⚠️ No matches found! This can happen when:\n- Problem CI Match filter removed all candidates\n- CI filter is too strict\n- No similar incidents in training data\n\nTry unchecking the filters or adjusting thresholds.")
+                    else:
                         st.session_state.batch_results = batch_results
                         st.session_state.show_results = True
                         st.rerun()
@@ -948,7 +1000,7 @@ elif st.session_state.mode == 'batch':
             with stats_col3:
                 st.metric("Edges", num_edges)
             
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
             
             # Legend
             st.markdown("""
@@ -1021,6 +1073,7 @@ elif st.session_state.mode == 'batch':
         
         # Apply filters to table
         table_results = batch_results
+        total_candidates = len(batch_results)
         
         # Filter by selected incident
         if selected_incident and selected_incident != "All Incidents":
@@ -1033,10 +1086,13 @@ elif st.session_state.mode == 'batch':
         
         # Apply top-K per incident
         table_results = apply_topk_per_incident(table_results, top_k, use_ce_for_threshold)
+        filters_removed_all = total_candidates > 0 and not table_results
+        if filters_removed_all:
+            st.warning("Your filters (score range, CI mismatch, or Problem CI Match) removed all matches. Try loosening the filters or disabling the Problem CI Match option.")
         
         if table_results:
             df = pd.DataFrame(table_results)
-            st.dataframe(df, use_container_width=True)
+            st.dataframe(df, width='stretch')
             st.caption(f"Showing {len(table_results)} matches (threshold ≥ {batch_threshold_min:.2f}, ≤ {top_k} per incident)")
             
             # Detailed Inspection Section
@@ -1105,15 +1161,20 @@ elif st.session_state.mode == 'batch':
                     st.markdown(f"**Problem ID:** {problem_id if has_problem else 'Missing'}")
                     
                     if has_problem:
-                        # Get problem short_description from matched incident (since problem is linked)
-                        if matched_train_inc:
-                            # Use short_description as problem context (problem linked to this incident)
-                            problem_short_desc = matched_train_inc.get('short_description', 'Missing')
-                            problem_desc = matched_train_inc.get('description', 'Missing')
+                        # Lookup problem details from problem_dataset.xlsx
+                        problem_info = problem_lookup.get(problem_id, {})
+                        
+                        if problem_info:
+                            # Found in problem_dataset - use those details
+                            problem_short_desc = problem_info.get('problem_short_description', 'Missing')
+                            problem_desc = problem_info.get('problem_description', 'Missing')
+                            problem_ci = problem_info.get('cmdb_ci', 'Missing')
                             st.markdown(f"**Problem Short Desc:** {problem_short_desc}")
                             st.markdown(f"**Problem Description:** {problem_desc}")
+                            st.markdown(f"**Problem CI:** {problem_ci}")
                         else:
-                            st.markdown("**Problem Description:** Missing")
+                            # Not found in problem_dataset - show info message
+                            st.info(f"Problem {problem_id} not found in problem_dataset.xlsx")
                     else:
                         st.info("No problem ID associated with this match")
                 
